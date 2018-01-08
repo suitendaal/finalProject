@@ -11,6 +11,10 @@ The problem is it would be better if a composer can hear his composed music righ
 
 The solution to this problem is an application which works like a loop, where the user can record his own voice several times.
 
+#### Visual sketch
+
+![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/IMG_20180108_135306.jpg)
+
 #### Main features
 
 The minimum viable prdoduct features are marked bold and italic.
