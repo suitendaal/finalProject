@@ -8,6 +8,12 @@
 
 ![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/hoi.png)
 
+## Other actions in the app
+
+* Save recordings to documents on the mobile phone.
+* Open saved recordings to play the file.
+* Use menu items to change fragments.
+
 ## API's and frameworks
 
 * [GENIUS API](https://genius.com/api-clients). I will use this API to search for song and artists. I get a maximum of 10 results back, containing among others the name, the artist and the url to the webpage with lyrics. If the user clicks on the song I will strip this html page until I only keep the lyrics.
