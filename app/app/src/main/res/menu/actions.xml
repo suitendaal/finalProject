@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/searchMenu"
+            android:title="Search" />
+        <item
+            android:id="@+id/sandboxMenu"
+            android:title="Sandbox mode" />
+        <item
+            android:id="@+id/recordingsMenu"
+            android:title="My recordings" />
+        <item
+            android:id="@+id/aboutMenu"
+            android:title="About" />
+    </group>
+</menu>

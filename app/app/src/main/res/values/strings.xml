@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Loop Station</string>
+    <string name="search_name">Search</string>
+    <string name="sandbox_name">Sandbox</string>
+    <string name="recordings_name">My recordings</string>
+    <string name="about_name">About</string>
+    <string name="instructions">TODO: here come the instructions</string>
+</resources>
