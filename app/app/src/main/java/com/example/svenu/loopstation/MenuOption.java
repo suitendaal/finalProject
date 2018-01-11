@@ -29,7 +29,7 @@ public class MenuOption {
                 loadNewActivity(MainActivity.class, false);
                 break;
             case R.id.recordingsMenu:
-                //TODO
+                loadNewActivity(MyRecordingsActivity.class);
                 break;
             case R.id.aboutMenu:
                 loadNewActivity(AboutActivity.class);
