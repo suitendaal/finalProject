@@ -19,6 +19,7 @@ public class Record {
     public Record(String aPathName) {
         samples = new ArrayList<>();
         pathName = aPathName;
+        recorder = new MediaRecorder();
     }
 
     public void startRecording() {
@@ -27,16 +28,14 @@ public class Record {
     }
 
     private void prepareMediaRecorder() {
-        recorder = new MediaRecorder();
-
         String status = Environment.getExternalStorageState();
         if(status.equals("mounted")) {
-            String path = pathName + samples.size();
+            String path = pathName + samples.size() + ".mpeg4";
             samples.add(path);
 
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
             recorder.setOutputFile(path);
             try {
                 recorder.prepare();
@@ -45,7 +44,6 @@ public class Record {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Log.d("Try","Exception");
         }
     }
 
