@@ -8,5 +8,6 @@
 * Give variables names so that it is clear what you use them for.
 * Don't use the same code in 2 different functions, make a function to run this specific code.
 * Sort functions in alphabetical order.
+* Put the onCreate function on top of the activity.
 * On top of each activity, write down what this activity does.
 * On top of each class, write down what this class is for.
