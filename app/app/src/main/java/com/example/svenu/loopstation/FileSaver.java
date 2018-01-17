@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by svenu on 16-1-2018.
@@ -39,9 +39,9 @@ public class FileSaver {
                             public void onClick(DialogInterface dialog,
                                                 int id) {
                                 String fileName = editText.getText().toString();
-                                boolean isAvailable = isFileNameAvailable(fileName);
-                                if (isAvailable) {
-                                    createFile(fileName);
+                                boolean isNameAvailable = isFileNameAvailable(fileName);
+                                if (isNameAvailable) {
+                                    record.saveRecord(fileName);
                                 }
                                 else {
                                     Toast.makeText(context, fileName + " not available", Toast.LENGTH_SHORT).show();
@@ -57,10 +57,6 @@ public class FileSaver {
                         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
-
-    private void createFile(String fileName) {
-        //TODO
     }
 
     private boolean isFileNameAvailable(String fileName) {
