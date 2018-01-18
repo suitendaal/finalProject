@@ -3,12 +3,12 @@ package com.example.svenu.loopstation;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by svenu on 16-1-2018.
@@ -21,6 +21,8 @@ public class FileSaver {
     private String path;
     private Record record;
 
+    private final String fileFormat = "3gp";
+
     public FileSaver(Context aContext, String aPath, Record aRecord) {
         context = aContext;
         path = aPath;
@@ -28,10 +30,8 @@ public class FileSaver {
     }
 
     public void chooseName() {
-
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder = loadAlertDialog(alertDialogBuilder);
-
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("Ok",
@@ -39,6 +39,8 @@ public class FileSaver {
                             public void onClick(DialogInterface dialog,
                                                 int id) {
                                 String fileName = editText.getText().toString();
+                                fileName = path + "/" + fileName + "." + fileFormat;
+                                Log.d("fileName", fileName);
                                 boolean isNameAvailable = isFileNameAvailable(fileName);
                                 if (isNameAvailable) {
                                     record.saveRecord(fileName);
@@ -64,7 +66,7 @@ public class FileSaver {
             return false;
         }
         else {
-            File file = new File(path + "/" + fileName + ".mpeg4");
+            File file = new File(fileName);
             if (file.exists()) {
                 return false;
             }

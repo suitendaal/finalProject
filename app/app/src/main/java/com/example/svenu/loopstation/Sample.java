@@ -1,14 +1,10 @@
 package com.example.svenu.loopstation;
 
-import android.content.Context;
-import android.media.AudioManager;
-import android.os.Handler;
 import android.media.MediaPlayer;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.logging.LogRecord;
+import java.io.IOException;
 
 /**
  * Created by svenu on 16-1-2018.
@@ -17,75 +13,78 @@ import java.util.logging.LogRecord;
 public class Sample {
 
     private String path;
-    private int beginTime;
     private int duration;
     private MediaPlayer mediaPlayer;
     private boolean isMediaPlayerInitialized = false;
+    private boolean isPlayable = false;
 
-    public Sample(String aPath, int aBeginTime) {
+    public Sample(String aPath) {
         path = aPath;
-        beginTime = aBeginTime;
-        Log.d("beginTime", beginTime + "");
-    }
-
-    private void initializeMediaPlayer() {
         mediaPlayer = new MediaPlayer();
-
-        try {
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepare();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    public void setDuration(int aDuration) {
-        duration = aDuration;
+    public void initializeSample() {
+        initializeMediaPlayer();
+        duration = mediaPlayer.getDuration();
+        isPlayable= true;
     }
 
     public int getDuration() {
         return duration;
     }
 
-    public int getBeginTime() {
-        return beginTime;
-    }
-
     public String getPath() {
         return path;
     }
 
+    public boolean isPlayable() {
+        return isPlayable;
+    }
+
+    public File getSampleFile() {
+        File file = new File(path);
+        return file;
+    }
+
     public MediaPlayer getMediaPlayer() {
+        if (!isMediaPlayerInitialized) {
+            initializeMediaPlayer();
+            isMediaPlayerInitialized = true;
+        }
         return mediaPlayer;
     }
 
-    public void play() {
-        // TODO: wait beginTime milliseconds
+    private void initializeMediaPlayer() {
+        Log.d("initializeMediaPlayer", path);
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(path);
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        isMediaPlayerInitialized = true;
+    }
 
+    public void play() {
         if (!isMediaPlayerInitialized)
         {
             initializeMediaPlayer();
-            isMediaPlayerInitialized = true;
         }
         mediaPlayer.start();
     }
 
     public void pause() {
-        if (isMediaPlayerInitialized && mediaPlayer.isPlaying()) {
+        if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }
     }
 
     public void stop() {
         if (isMediaPlayerInitialized) {
+            mediaPlayer.stop();
             mediaPlayer.release();
             isMediaPlayerInitialized = false;
         }
-    }
-
-    public File getSampleFile() {
-        File file = new File(path);
-        // TODO: add silence in length of beginTime
-        return file;
     }
 }

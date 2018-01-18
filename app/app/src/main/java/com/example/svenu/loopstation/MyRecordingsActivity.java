@@ -81,7 +81,7 @@ public class MyRecordingsActivity extends AppCompatActivity {
     private void loadFilesInListView() {
 
         // https://stackoverflow.com/questions/8646984/how-to-list-files-in-an-android-directory
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/loopStation/myRecordings/";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + MainActivity.appDirectory + MainActivity.recordingsDirectory;
         Log.d("Files", "Path: " + path);
         File directory = new File(path);
         File[] files = directory.listFiles();

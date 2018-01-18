@@ -1,19 +1,15 @@
 package com.example.svenu.loopstation;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -22,11 +18,16 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ToggleButton recordButton;
     private DirectoryCreator directoryCreator;
     private Record record;
     private FileSaver fileSaver;
     private String pathName;
     private String recordDirectory;
+
+    private final String fileFormat = "3gp";
+    public static final String appDirectory = "/loopStation";
+    public static final String recordingsDirectory = "/myRecordings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener btnClick = new View.OnClickListener() {
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.buttonRecord: {
+                    record.buttonClicked();
+                    break;
+                }
                 case R.id.buttonPlay: {
                     record.play();
                     break;
@@ -61,26 +66,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.buttonStop: {
-                    record.stopPlaying();
+                    record.stop();
                     break;
                 }
                 case R.id.buttonSave: {
                     fileSaver.chooseName();
                     break;
                 }
-            }
-        }
-    };
-
-    private ToggleButton.OnCheckedChangeListener checkChange = new ToggleButton.OnCheckedChangeListener() {
-
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            if (isChecked) {
-                record.startRecording();
-            }
-            else {
-                record.stopRecording();
             }
         }
     };
@@ -111,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         MenuOption menuOption = new MenuOption(item);
         menuOption.loadActivity(this);
+        record.close();
+        createDirectories();
         return true;
     }
 
@@ -149,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setButtonHandlers() {
-        ((ToggleButton) findViewById(R.id.buttonRecord)).setOnCheckedChangeListener(checkChange);
+        recordButton.setOnClickListener(btnClick);
         findViewById(R.id.buttonPlay).setOnClickListener(btnClick);
         findViewById(R.id.buttonPause).setOnClickListener(btnClick);
         findViewById(R.id.buttonStop).setOnClickListener(btnClick);
@@ -163,10 +157,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setVariables() {
-        pathName = Environment.getExternalStorageDirectory().getAbsolutePath()+"/loopStation";
-        recordDirectory = pathName + "/myRecordings";
+        pathName = Environment.getExternalStorageDirectory().getAbsolutePath() + appDirectory;
+        recordDirectory = pathName + recordingsDirectory;
         directoryCreator = new DirectoryCreator();
-        record = new Record(this, pathName);
+        recordButton = findViewById(R.id.buttonRecord);
+        record = new Record(pathName, fileFormat, recordButton);
         fileSaver = new FileSaver(this, recordDirectory, record);
     }
 }
