@@ -52,7 +52,7 @@ public class Record {
             }
             // if not recording and playing, wait for loop to end, then record
             else {
-                isRecording.setValue(IsRecording.goingToRecord);
+                isRecording.setValue(ActionChecker.goingToDo);
                 toggleButton.setChecked(false);
                 isPlaying.setVariableChangeListener(new IsPlayingChangeListener());
             }
