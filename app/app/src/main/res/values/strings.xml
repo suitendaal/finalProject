@@ -5,4 +5,5 @@
     <string name="recordings_name">My recordings</string>
     <string name="about_name">About</string>
     <string name="instructions">TODO: here come the instructions</string>
+    <string name="no_samples">No samples recorded, please record samples first</string>
 </resources>

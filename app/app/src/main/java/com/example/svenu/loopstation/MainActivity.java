@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         recordDirectory = pathName + recordingsDirectory;
         directoryCreator = new DirectoryCreator();
         recordButton = findViewById(R.id.buttonRecord);
-        record = new Record(pathName, fileFormat, recordButton);
+        record = new Record(this, pathName, fileFormat, recordButton);
         fileSaver = new FileSaver(this, recordDirectory, record);
     }
 }

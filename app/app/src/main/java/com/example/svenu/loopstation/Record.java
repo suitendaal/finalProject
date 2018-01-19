@@ -1,5 +1,6 @@
 package com.example.svenu.loopstation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 public class Record {
 
+    private Context context;
     private String pathName;
     private String fileFormat;
     private ToggleButton toggleButton;
@@ -29,7 +31,8 @@ public class Record {
     private final int bitRate = 16;
     private final int sampleRate = 44100;
 
-    public Record(String aPathName, String aFileFormat, ToggleButton aToggleButton) {
+    public Record(Context aContext, String aPathName, String aFileFormat, ToggleButton aToggleButton) {
+        context = aContext;
         pathName = aPathName;
         fileFormat = aFileFormat;
         toggleButton = aToggleButton;
@@ -155,7 +158,7 @@ public class Record {
             File file = sample.getSampleFile();
             files.add(file);
         }
-        SongCreator songCreator = new SongCreator();
+        SongCreator songCreator = new SongCreator((Activity) context);
         songCreator.createSong(fileName, files);
     }
 
@@ -200,6 +203,7 @@ public class Record {
         if (firstRecord) {
             firstRecord = false;
             recorder.setMaxDuration(sample.getDuration());
+            play();
         }
         toggleButton.setChecked(false);
     }
