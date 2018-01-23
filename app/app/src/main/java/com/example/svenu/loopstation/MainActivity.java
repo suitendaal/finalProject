@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private String pathName;
     private String recordDirectory;
 
-    private final String fileFormat = "3gp";
+    private final String fileFormat = "m4a";
     public static final String appDirectory = "/loopStation";
     public static final String recordingsDirectory = "/myRecordings";
 

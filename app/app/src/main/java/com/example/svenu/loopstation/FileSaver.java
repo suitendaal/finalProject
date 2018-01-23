@@ -21,7 +21,7 @@ public class FileSaver {
     private String path;
     private Record record;
 
-    private final String fileFormat = "3gp";
+    //private final String fileFormat = "m4a";
 
     public FileSaver(Context aContext, String aPath, Record aRecord) {
         context = aContext;
@@ -39,7 +39,7 @@ public class FileSaver {
                             public void onClick(DialogInterface dialog,
                                                 int id) {
                                 String fileName = editText.getText().toString();
-                                fileName = path + "/" + fileName + "." + fileFormat;
+                                fileName = path + "/" + fileName;// + "." + fileFormat;
                                 Log.d("fileName", fileName);
                                 boolean isNameAvailable = isFileNameAvailable(fileName);
                                 if (isNameAvailable) {

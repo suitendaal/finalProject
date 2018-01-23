@@ -77,15 +77,15 @@ public class Record {
     private class GoMediaPlayerCompleted implements MediaPlayer.OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
-            isPlaying.setValue(ActionChecker.notDoing);
+            stop();
             play();
         }
     }
 
     private void initializeRecorder(String path) {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
         recorder.setAudioEncodingBitRate(bitRate);
         recorder.setAudioSamplingRate(sampleRate);
         recorder.setOutputFile(path);
@@ -131,6 +131,7 @@ public class Record {
                 if (sample.isPlayable()) {
                     Log.d("playing ", sample.getPath());
                     sample.play();
+                    Log.d("duration", sample.getDuration()+"");
                 }
             }
             Sample primarySample = samples.get(0);
@@ -159,7 +160,11 @@ public class Record {
             files.add(file);
         }
         SongCreator songCreator = new SongCreator((Activity) context);
-        songCreator.createSong(fileName, files);
+        try {
+            songCreator.createSong(fileName, files);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void startRecording() {
@@ -185,7 +190,9 @@ public class Record {
     public void stop() {
         if (isPlaying.getValue() != ActionChecker.notDoing) {
             for (Sample sample: samples) {
-                sample.stop();
+                if (sample.isPlayable()) {
+                    sample.stop();
+                }
             }
         }
         isPlaying.setValue(ActionChecker.notDoing);

@@ -66,15 +66,11 @@ public class MyRecordingsActivity extends AppCompatActivity {
     };
 
     private void playRecording(String path) {
-        MediaPlayer mediaPlayer = new MediaPlayer();
-
-        try {
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        for (File file: files) {
+            Sample sample = new Sample(file.getAbsolutePath());
+            sample.play();
         }
     }
 
