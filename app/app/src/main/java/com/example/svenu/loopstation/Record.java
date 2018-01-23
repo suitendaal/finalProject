@@ -77,7 +77,12 @@ public class Record {
     private class GoMediaPlayerCompleted implements MediaPlayer.OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
-            stop();
+            for (Sample sample: samples) {
+                if (sample.isPlayable()) {
+                    sample.stop();
+                }
+            }
+            isPlaying.setValue(ActionChecker.notDoing);
             play();
         }
     }

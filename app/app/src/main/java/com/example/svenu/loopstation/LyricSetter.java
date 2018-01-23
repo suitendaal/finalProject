@@ -23,29 +23,6 @@ public class LyricSetter {
         context = aContext;
     }
 
-    // Code for lyrics
-    public void setLyrics(String url, final TextView lyricTextView) {
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        String lyrics = responseToLyrics(response);
-                        lyricTextView.setText(lyrics);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
-
     private String responseToLyrics(String response) {
         String lyrics = response.split("<div class=\"lyrics\">\n")[1];
 
@@ -89,6 +66,28 @@ public class LyricSetter {
         }
 
         return lyrics;
+    }
+
+    public void setLyrics(String url, final TextView lyricTextView) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        String lyrics = responseToLyrics(response);
+                        lyricTextView.setText(lyrics);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     public static String unEscapeString(String s){

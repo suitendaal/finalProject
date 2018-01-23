@@ -21,8 +21,6 @@ public class FileSaver {
     private String path;
     private Record record;
 
-    //private final String fileFormat = "m4a";
-
     public FileSaver(Context aContext, String aPath, Record aRecord) {
         context = aContext;
         path = aPath;
@@ -31,48 +29,35 @@ public class FileSaver {
 
     public void chooseName() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder = loadAlertDialog(alertDialogBuilder);
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Ok",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                String fileName = editText.getText().toString();
-                                fileName = path + "/" + fileName;// + "." + fileFormat;
-                                Log.d("fileName", fileName);
-                                boolean isNameAvailable = isFileNameAvailable(fileName);
-                                if (isNameAvailable) {
-                                    record.saveRecord(fileName);
-                                }
-                                else {
-                                    Toast.makeText(context, fileName + " not available", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        AlertDialogCreator alertDialogCreator = new AlertDialogCreator(loadAlertDialog(alertDialogBuilder));
+        alertDialogCreator.setNegativeListener("Cancel");
+        alertDialogCreator.setPositiveListener("Ok");
+        alertDialogCreator.setButtonClickListener(new GobuttonClickListener());
+        alertDialogCreator.create();
     }
 
-    private boolean isFileNameAvailable(String fileName) {
-        if (fileName.equals("")) {
-            return false;
-        }
-        else {
-            File file = new File(fileName);
-            if (file.exists()) {
-                return false;
+    private class GobuttonClickListener implements AlertDialogCreator.ButtonClickListener {
+        @Override
+        public void onPositiveClick(DialogInterface dialog, int id) {
+            String fileName = editText.getText().toString();
+            fileName = path + "/" + fileName;// + "." + fileFormat;
+            Log.d("fileName", fileName);
+            boolean isNameAvailable = isFileNameAvailable(fileName);
+            if (isNameAvailable) {
+                record.saveRecord(fileName);
             }
             else {
-                return true;
+                Toast.makeText(context, fileName + " not available", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        @Override
+        public void onNegativeClick(DialogInterface dialog, int id) {
+            dialog.cancel();
+        }
+
+        @Override
+        public void onNeutralClick(DialogInterface dialog, int id) {
         }
     }
 
@@ -93,4 +78,18 @@ public class FileSaver {
         return alertDialogBuilder;
     }
 
+    private boolean isFileNameAvailable(String fileName) {
+        if (fileName.equals("")) {
+            return false;
+        }
+        else {
+            File file = new File(fileName);
+            if (file.exists()) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    }
 }

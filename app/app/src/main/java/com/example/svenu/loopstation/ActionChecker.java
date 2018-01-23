@@ -15,6 +15,10 @@ public class ActionChecker {
         integer = value;
     }
 
+    public int getValue() {
+        return integer;
+    }
+
     public void setValue(int value) {
         if (value != integer)
         {
@@ -22,17 +26,6 @@ public class ActionChecker {
             signalChanged();
         }
     }
-
-    public int getValue() {
-        return integer;
-    }
-
-    public interface VariableChangeListener
-    {
-        public void onVariableChanged(ActionChecker actionChecker);
-    }
-
-    private VariableChangeListener variableChangeListener;
 
     public void setVariableChangeListener(VariableChangeListener variableChangeListener)
     {
@@ -44,4 +37,11 @@ public class ActionChecker {
         if (variableChangeListener != null)
             variableChangeListener.onVariableChanged(this);
     }
+
+    public interface VariableChangeListener
+    {
+        public void onVariableChanged(ActionChecker actionChecker);
+    }
+
+    private VariableChangeListener variableChangeListener;
 }

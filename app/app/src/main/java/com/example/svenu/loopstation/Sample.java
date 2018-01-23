@@ -23,27 +23,8 @@ public class Sample {
         mediaPlayer = new MediaPlayer();
     }
 
-    public void initializeSample() {
-        initializeMediaPlayer();
-        duration = mediaPlayer.getDuration();
-        isPlayable= true;
-    }
-
     public int getDuration() {
         return duration;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public boolean isPlayable() {
-        return isPlayable;
-    }
-
-    public File getSampleFile() {
-        File file = new File(path);
-        return file;
     }
 
     public MediaPlayer getMediaPlayer() {
@@ -52,6 +33,15 @@ public class Sample {
             isMediaPlayerInitialized = true;
         }
         return mediaPlayer;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public File getSampleFile() {
+        File file = new File(path);
+        return file;
     }
 
     private void initializeMediaPlayer() {
@@ -66,18 +56,28 @@ public class Sample {
         isMediaPlayerInitialized = true;
     }
 
-    public void play() {
-        if (!isMediaPlayerInitialized)
-        {
-            initializeMediaPlayer();
-        }
-        mediaPlayer.start();
+    public void initializeSample() {
+        initializeMediaPlayer();
+        duration = mediaPlayer.getDuration();
+        isPlayable= true;
+    }
+
+    public boolean isPlayable() {
+        return isPlayable;
     }
 
     public void pause() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }
+    }
+
+    public void play() {
+        if (!isMediaPlayerInitialized)
+        {
+            initializeMediaPlayer();
+        }
+        mediaPlayer.start();
     }
 
     public void stop() {

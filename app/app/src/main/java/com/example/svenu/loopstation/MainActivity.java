@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.buttonSave: {
                     fileSaver.chooseName();
+                    Toast.makeText(getApplicationContext(), "Recording saved", Toast.LENGTH_SHORT).show();
                     break;
                 }
             }

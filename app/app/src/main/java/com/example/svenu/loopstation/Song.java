@@ -15,12 +15,12 @@ public class Song {
         url = anUrl;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public String getArtist() {
         return artist;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getUrl() {

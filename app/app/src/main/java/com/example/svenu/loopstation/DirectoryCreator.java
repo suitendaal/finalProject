@@ -12,6 +12,23 @@ public class DirectoryCreator {
 
     public DirectoryCreator() {}
 
+    public void createDirectory(String directoryPath) {
+
+        // https://stackoverflow.com/questions/17794974/create-folder-in-android
+        Log.d("directoryPath", directoryPath);
+        File folder = new File(directoryPath);
+        boolean success = true;
+        if (!folder.exists()) {
+            Log.d("directory", "mkdir");
+            success = folder.mkdirs();
+        }
+        if (success) {
+            Log.d("directory", "created");
+        } else {
+            Log.d("directory", "failed");
+        }
+    }
+
     public void emptyDirectory(String pathName, String directoryToKeep) {
 
         // https://stackoverflow.com/questions/4943629/how-to-delete-a-whole-folder-and-content
@@ -28,23 +45,6 @@ public class DirectoryCreator {
                     file.delete();
                 }
             }
-        }
-    }
-
-    public void createDirectory(String directoryPath) {
-
-        // https://stackoverflow.com/questions/17794974/create-folder-in-android
-        Log.d("directoryPath", directoryPath);
-        File folder = new File(directoryPath);
-        boolean success = true;
-        if (!folder.exists()) {
-            Log.d("directory", "mkdir");
-            success = folder.mkdirs();
-        }
-        if (success) {
-            Log.d("directory", "created");
-        } else {
-            Log.d("directory", "failed");
         }
     }
 }

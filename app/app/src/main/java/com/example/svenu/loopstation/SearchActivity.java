@@ -46,19 +46,14 @@ public class SearchActivity extends AppCompatActivity {
         editText.addTextChangedListener(new GoSearchListener());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-
-        new MenuVisibility(menu, inflater, false);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        MenuOption menuOption = new MenuOption(item);
-        menuOption.loadActivity(this);
-        return true;
+    private class GoResultListener implements android.widget.AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            TextView titleTextView = view.findViewById(R.id.textViewSongTitle);
+            String title = titleTextView.getText().toString();
+            String url = titleTextView.getTag().toString();
+            loadNewActivity(title, url);
+        }
     }
 
     private class GoSearchListener implements TextWatcher {
@@ -74,6 +69,30 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable editable) {
         }
+    }
+
+    private void loadNewActivity(String title, String url) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("isCover", true);
+        intent.putExtra("title", title);
+        intent.putExtra("url", url);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+
+        new MenuVisibility(menu, inflater, false);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        MenuOption menuOption = new MenuOption(item);
+        menuOption.loadActivity(this);
+        return true;
     }
 
     private void searchSongs(String searchText) {
@@ -120,25 +139,5 @@ public class SearchActivity extends AppCompatActivity {
     private void updateSongAdapter(ArrayList<Song> songs) {
         SongAdapter songAdapter = new SongAdapter(this, songs);
         listView.setAdapter(songAdapter);
-    }
-
-
-    private class GoResultListener implements android.widget.AdapterView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            TextView titleTextView = view.findViewById(R.id.textViewSongTitle);
-            String title = titleTextView.getText().toString();
-            String url = titleTextView.getTag().toString();
-            loadNewActivity(title, url);
-        }
-    }
-
-    private void loadNewActivity(String title, String url) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("isCover", true);
-        intent.putExtra("title", title);
-        intent.putExtra("url", url);
-        startActivity(intent);
-        finish();
     }
 }

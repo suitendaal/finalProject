@@ -1,8 +1,8 @@
 package com.example.svenu.loopstation;
 
-import android.media.MediaPlayer;
+import android.content.DialogInterface;
 import android.os.Environment;
-import android.support.annotation.NonNull;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,19 +11,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MyRecordingsActivity extends AppCompatActivity {
 
     private ListView listView;
+    private TextView fileTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,41 +36,43 @@ public class MyRecordingsActivity extends AppCompatActivity {
         loadFilesInListView();
     }
 
-    private void setListViewHandlers() {
-        listView.setOnItemClickListener(recordingsClick);
-        listView.setOnItemLongClickListener(recordingsLongClick);
+    private void deleteRecording(String path) {
+        File recordToDelete = new File(path);
+        if (recordToDelete.isDirectory())
+        {
+            String[] children = recordToDelete.list();
+            for (int j = 0; j < children.length; j++)
+            {
+                new File(recordToDelete, children[j]).delete();
+            }
+        }
+        boolean deleted = recordToDelete.delete();
+        Log.d("Delete recording", "deleted: " + deleted);
     }
 
-    private ListView.OnItemClickListener recordingsClick = new ListView.OnItemClickListener() {
+    private class GoAlertButtonClickListener implements AlertDialogCreator.ButtonClickListener {
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            TextView fileTextView = view.findViewById(R.id.textViewFile);
-            String path = fileTextView.getTag().toString();
-            playRecording(path);
-        }
-    };
-
-    private ListView.OnItemLongClickListener recordingsLongClick = new ListView.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-            TextView fileTextView = view.findViewById(R.id.textViewFile);
-            String path = fileTextView.getTag().toString();
-            File recordToDelete = new File(path);
-            boolean deleted = recordToDelete.delete();
-            Log.d("Delete recording", "deleted: " + deleted);
+        public void onPositiveClick(DialogInterface dialog, int id) {
+            deleteRecording(fileTextView.getTag().toString());
+            Toast.makeText(getApplicationContext(), "Deleted " + fileTextView.getText().toString(), Toast.LENGTH_SHORT).show();
             loadFilesInListView();
-
-            return true;
         }
-    };
 
-    private void playRecording(String path) {
-        File directory = new File(path);
-        File[] files = directory.listFiles();
-        for (File file: files) {
-            Sample sample = new Sample(file.getAbsolutePath());
-            sample.play();
+        @Override
+        public void onNegativeClick(DialogInterface dialog, int id) {
+            dialog.cancel();
         }
+
+        @Override
+        public void onNeutralClick(DialogInterface dialog, int id) {
+
+        }
+    }
+
+    private AlertDialog.Builder loadAlertDialog(String fileName) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Are you sure you want to delete " + fileName + "?");
+        return alertDialogBuilder;
     }
 
     private void loadFilesInListView() {
@@ -88,8 +89,6 @@ public class MyRecordingsActivity extends AppCompatActivity {
         listView.setAdapter(recordingsAdapter);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -103,5 +102,44 @@ public class MyRecordingsActivity extends AppCompatActivity {
         MenuOption menuOption = new MenuOption(item);
         menuOption.loadActivity(this);
         return true;
+    }
+
+    private void playRecording(String path) {
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        for (File file: files) {
+            Sample sample = new Sample(file.getAbsolutePath());
+            sample.play();
+        }
+    }
+
+    private ListView.OnItemClickListener recordingsClick = new ListView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            fileTextView = view.findViewById(R.id.textViewFile);
+            String path = fileTextView.getTag().toString();
+            playRecording(path);
+        }
+    };
+
+    private ListView.OnItemLongClickListener recordingsLongClick = new ListView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            TextView fileTextView = view.findViewById(R.id.textViewFile);
+            AlertDialog.Builder alertDialogBuilder = loadAlertDialog(fileTextView.getText().toString());
+            AlertDialogCreator alertDialogCreator = new AlertDialogCreator(alertDialogBuilder);
+            alertDialogCreator.setPositiveListener("Yes");
+            alertDialogCreator.setNegativeListener("No");
+            alertDialogCreator.create();
+            alertDialogCreator.setButtonClickListener(new GoAlertButtonClickListener());
+
+            return true;
+        }
+    };
+
+    private void setListViewHandlers() {
+        listView.setOnItemClickListener(recordingsClick);
+        listView.setOnItemLongClickListener(recordingsLongClick);
     }
 }
