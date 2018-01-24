@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.buttonSave: {
                     fileSaver.chooseName();
-                    Toast.makeText(getApplicationContext(), "Recording saved", Toast.LENGTH_SHORT).show();
                     break;
                 }
             }

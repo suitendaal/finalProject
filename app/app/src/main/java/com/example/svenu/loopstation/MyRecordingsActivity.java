@@ -3,6 +3,7 @@ package com.example.svenu.loopstation;
 import android.content.DialogInterface;
 import android.os.Environment;
 import android.app.AlertDialog;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -71,7 +72,7 @@ public class MyRecordingsActivity extends AppCompatActivity {
 
     private AlertDialog.Builder loadAlertDialog(String fileName) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Are you sure you want to delete " + fileName + "?");
+        alertDialogBuilder.setTitle("Do you want to delete " + fileName + "?");
         return alertDialogBuilder;
     }
 
@@ -104,12 +105,23 @@ public class MyRecordingsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void playRecording(String path) {
+    private boolean playRecording(String path) {
         File directory = new File(path);
         File[] files = directory.listFiles();
-        for (File file: files) {
-            Sample sample = new Sample(file.getAbsolutePath());
-            sample.play();
+
+        if (files.length > 0) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            PlayFragment playFragment = new PlayFragment();
+            Bundle args = new Bundle();
+            args.putString("path", path);
+            args.putString("songTitle", directory.getName());
+            playFragment.setArguments(args);
+            playFragment.show(ft, "play file");
+            return true;
+        }
+        else {
+            Toast.makeText(this, "Record not available", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 
@@ -118,7 +130,10 @@ public class MyRecordingsActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             fileTextView = view.findViewById(R.id.textViewFile);
             String path = fileTextView.getTag().toString();
-            playRecording(path);
+            if (!playRecording(path)) {
+                recordingsLongClick.onItemLongClick(adapterView, view, i, l);
+            }
+
         }
     };
 

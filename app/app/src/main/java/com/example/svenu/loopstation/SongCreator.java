@@ -16,12 +16,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.coremedia.iso.boxes.Container;
-import com.googlecode.mp4parser.authoring.Movie;
-import com.googlecode.mp4parser.authoring.Track;
-import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
-import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
-import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 
 /**
  * Created by svenu on 18-1-2018.
@@ -29,10 +23,7 @@ import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 
 public class SongCreator {
 
-    Activity activity;
-
-    public SongCreator(Activity anActivity) {
-        activity = anActivity;
+    public SongCreator() {
     }
 
     public void createSong(String fileName, ArrayList<File> files) throws IOException {

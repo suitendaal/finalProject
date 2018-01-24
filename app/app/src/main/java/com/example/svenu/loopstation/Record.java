@@ -164,7 +164,7 @@ public class Record {
             File file = sample.getSampleFile();
             files.add(file);
         }
-        SongCreator songCreator = new SongCreator((Activity) context);
+        SongCreator songCreator = new SongCreator();
         try {
             songCreator.createSong(fileName, files);
         } catch (IOException e) {

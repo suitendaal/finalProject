@@ -45,6 +45,7 @@ public class FileSaver {
             boolean isNameAvailable = isFileNameAvailable(fileName);
             if (isNameAvailable) {
                 record.saveRecord(fileName);
+                Toast.makeText(context, "Recording saved", Toast.LENGTH_SHORT).show();
             }
             else {
                 Toast.makeText(context, fileName + " not available", Toast.LENGTH_SHORT).show();
