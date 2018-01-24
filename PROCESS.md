@@ -28,3 +28,7 @@ Same as day 5.
 # Day 7
 
 Found a solution to the problem of day 5 and 6. When a user saves his recording a directory is created with a name chosen by the user. All of the samples are copied to this directory.
+
+# Day 8
+
+Made some dialogframes. The one for the seekbar for playing audio does not work yet.
