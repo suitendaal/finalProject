@@ -11,7 +11,8 @@ import android.widget.Toast;
 import java.io.File;
 
 /**
- * Created by svenu on 16-1-2018.
+ * Class which creates a dialogframe to save a file. It also checks if the filename
+ * given by the user is available.
  */
 
 public class FileSaver {
@@ -20,11 +21,13 @@ public class FileSaver {
     private EditText editText;
     private String path;
     private Record record;
+    private boolean isNameAvailable;
 
     public FileSaver(Context aContext, String aPath, Record aRecord) {
         context = aContext;
         path = aPath;
         record = aRecord;
+        isNameAvailable = false;
     }
 
     public void chooseName() {
@@ -40,12 +43,13 @@ public class FileSaver {
         @Override
         public void onPositiveClick(DialogInterface dialog, int id) {
             String fileName = editText.getText().toString();
-            fileName = path + "/" + fileName;// + "." + fileFormat;
+            fileName = path + "/" + fileName;
             Log.d("fileName", fileName);
-            boolean isNameAvailable = isFileNameAvailable(fileName);
+            isNameAvailable = isFileNameAvailable(fileName);
             if (isNameAvailable) {
                 record.saveRecord(fileName);
                 Toast.makeText(context, "Recording saved", Toast.LENGTH_SHORT).show();
+                record.delete();
             }
             else {
                 Toast.makeText(context, fileName + " not available", Toast.LENGTH_SHORT).show();
@@ -67,7 +71,7 @@ public class FileSaver {
         editText = new EditText(context);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(50, 50);
-        RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(30, RelativeLayout.LayoutParams.WRAP_CONTENT);
         editTextParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
         relativeLayout.setLayoutParams(params);
@@ -85,12 +89,7 @@ public class FileSaver {
         }
         else {
             File file = new File(fileName);
-            if (file.exists()) {
-                return false;
-            }
-            else {
-                return true;
-            }
+            return !file.exists();
         }
     }
 }

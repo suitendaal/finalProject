@@ -29,10 +29,10 @@ public class PlayFragment extends DialogFragment {
     private View rootView;
     private Sample primarySample;
     private ArrayList<Sample> samples;
-    private Button playPauseButton;
+    private ToggleButton playPauseButton;
     private ToggleButton loopToggle;
     private TextView textView;
-    private ActionChecker isPlaying;
+    private boolean isPlaying;
     private boolean isLooping;
     private String songTitle;
 
@@ -50,10 +50,10 @@ public class PlayFragment extends DialogFragment {
         return rootView;
     }
 
-    private class GoPlayPauseClickListener implements View.OnClickListener {
+    private class GoPlayPauseClickListener implements CompoundButton.OnCheckedChangeListener {
         @Override
-        public void onClick(View view) {
-            if (isPlaying.getValue() == ActionChecker.notDoing) {
+        public void onCheckedChanged(CompoundButton compoundButton, boolean pressed) {
+            if (pressed) {
                 play();
             }
             else {
@@ -69,17 +69,24 @@ public class PlayFragment extends DialogFragment {
     }
 
     private void pause() {
-        for (Sample sample: samples) {
-            sample.pause();
+        if (isPlaying) {
+            for (Sample sample : samples) {
+                sample.pause();
+            }
+            isPlaying = false;
+            playPauseButton.setChecked(false);
         }
-        isPlaying.setValue(ActionChecker.notDoing);
     }
 
     private void play() {
-        for (Sample sample: samples) {
-            sample.play();
+        if (!isPlaying) {
+            for (Sample sample : samples) {
+                sample.play();
+            }
+            primarySample.getMediaPlayer().setOnCompletionListener(new PlayCompletedListener());
+            isPlaying = true;
+            playPauseButton.setChecked(true);
         }
-        primarySample.getMediaPlayer().setOnCompletionListener(new PlayCompletedListener());
     }
 
     private class PlayCompletedListener implements MediaPlayer.OnCompletionListener {
@@ -93,7 +100,7 @@ public class PlayFragment extends DialogFragment {
     }
 
     private void setButtonHandlers() {
-        playPauseButton.setOnClickListener(new GoPlayPauseClickListener());
+        playPauseButton.setOnCheckedChangeListener(new GoPlayPauseClickListener());
         loopToggle.setOnCheckedChangeListener(new ToggleChangeListener());
     }
 
@@ -108,7 +115,7 @@ public class PlayFragment extends DialogFragment {
     }
 
     private void setVariables() {
-        playPauseButton = rootView.findViewById(R.id.playPauseButton);
+        playPauseButton = rootView.findViewById(R.id.buttonPlayPauseRecords);
         loopToggle = rootView.findViewById(R.id.toggleButton);
         textView = rootView.findViewById(R.id.textViewTitle);
         samples = new ArrayList<>();
@@ -117,15 +124,18 @@ public class PlayFragment extends DialogFragment {
         songTitle = args.getString("songTitle");
         textView.setText(songTitle);
         setSamples(path);
-        isPlaying = new ActionChecker(ActionChecker.notDoing);
+        isPlaying = false;
         isLooping = false;
     }
 
     private void stop() {
-        for (Sample sample: samples) {
-            sample.stop();
+        if (isPlaying) {
+            for (Sample sample : samples) {
+                sample.stop();
+            }
+            isPlaying = false;
+            playPauseButton.setChecked(false);
         }
-        isPlaying.setValue(ActionChecker.notDoing);
     }
 
     private class ToggleChangeListener implements CompoundButton.OnCheckedChangeListener {

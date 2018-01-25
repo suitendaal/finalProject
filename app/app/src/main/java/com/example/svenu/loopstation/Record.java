@@ -1,7 +1,5 @@
 package com.example.svenu.loopstation;
 
-import android.app.Activity;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -13,15 +11,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by svenu on 18-1-2018.
+ * Class which has a mediarecorder to record samples. When a sample is recorder it is added to
+ * the record's collection of samples. It can record and stop recording a sample.
+ * The maximum duration time is the time of the first recorded sample.
+ * It can play, pause and stop the samples. When a user saves his record,
+ * all of the samples are moved to another directory, chosen by the user.
  */
 
 public class Record {
 
-    private Context context;
     private String pathName;
     private String fileFormat;
-    private ToggleButton toggleButton;
+    private ToggleButton recordButton;
+    private ToggleButton playPauseButton;
     private MediaRecorder recorder;
     private ArrayList<Sample> samples;
     private boolean firstRecord;
@@ -31,19 +33,15 @@ public class Record {
     private final int bitRate = 16;
     private final int sampleRate = 44100;
 
-    public Record(Context aContext, String aPathName, String aFileFormat, ToggleButton aToggleButton) {
-        context = aContext;
+    public Record(String aPathName, String aFileFormat, ToggleButton aRecordButton, ToggleButton aPlayPauseButton) {
         pathName = aPathName;
         fileFormat = aFileFormat;
-        toggleButton = aToggleButton;
-        recorder = new MediaRecorder();
-        samples = new ArrayList<>();
-        firstRecord = true;
-        isPlaying = new ActionChecker(ActionChecker.notDoing);
-        isRecording = new ActionChecker(ActionChecker.notDoing);
+        recordButton = aRecordButton;
+        playPauseButton = aPlayPauseButton;
+        setVariables();
     }
 
-    public void buttonClicked() {
+    public void buttonRecordClicked() {
         // if recording, stop recording
         if (isRecording.getValue() == ActionChecker.doing) {
             stopRecording();
@@ -56,13 +54,13 @@ public class Record {
             // if not recording and playing, wait for loop to end, then record
             else {
                 isRecording.setValue(ActionChecker.goingToDo);
-                toggleButton.setChecked(false);
+                recordButton.setChecked(false);
                 isPlaying.setVariableChangeListener(new IsPlayingChangeListener());
             }
         }
         // if already going to record, do nothing
         else {
-            toggleButton.setChecked(false);
+            recordButton.setChecked(false);
         }
     }
 
@@ -72,6 +70,25 @@ public class Record {
             stopRecording();
         }
         isRecording.setValue(ActionChecker.notDoing);
+    }
+
+    public void buttonPlayPauseClicked() {
+        if (isPlaying.getValue() == ActionChecker.doing) {
+            pause();
+        }
+        else {
+            play();
+        }
+    }
+
+    public void delete() {
+        for (Sample sample: samples) {
+            if (sample.isPlayable()) {
+                sample.stop();
+            }
+            sample.delete();
+        }
+        setVariables();
     }
 
     private class GoMediaPlayerCompleted implements MediaPlayer.OnCompletionListener {
@@ -96,9 +113,7 @@ public class Record {
         recorder.setOutputFile(path);
         try {
             recorder.prepare();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -127,22 +142,29 @@ public class Record {
                 sample.play();
             }
             isPlaying.setValue(ActionChecker.doing);
+            playPauseButton.setChecked(false);
         }
     }
 
-    public void play() {
-        if (samples.size() > 0 && isPlaying.getValue() != ActionChecker.doing) {
-            for (Sample sample : samples) {
-                if (sample.isPlayable()) {
-                    Log.d("playing ", sample.getPath());
-                    sample.play();
-                    Log.d("duration", sample.getDuration()+"");
+    private void play() {
+        if (isPlaying.getValue() != ActionChecker.doing) {
+            if (samples.size() > 0) {
+                for (Sample sample : samples) {
+                    if (sample.isPlayable()) {
+                        Log.d("playing ", sample.getPath());
+                        sample.play();
+                        Log.d("duration", sample.getDuration() + "");
+                    }
                 }
+                Sample primarySample = samples.get(0);
+                if (primarySample.isPlayable()) {
+                    isPlaying.setValue(ActionChecker.doing);
+                    primarySample.getMediaPlayer().setOnCompletionListener(new GoMediaPlayerCompleted());
+                }
+                playPauseButton.setChecked(true);
             }
-            Sample primarySample = samples.get(0);
-            if (primarySample.isPlayable()) {
-                isPlaying.setValue(ActionChecker.doing);
-                primarySample.getMediaPlayer().setOnCompletionListener(new GoMediaPlayerCompleted());
+            else {
+                playPauseButton.setChecked(false);
             }
         }
     }
@@ -172,6 +194,17 @@ public class Record {
         }
     }
 
+    private void setVariables() {
+        recorder = new MediaRecorder();
+        samples = new ArrayList<>();
+        firstRecord = true;
+        isPlaying = new ActionChecker(ActionChecker.notDoing);
+        isRecording = new ActionChecker(ActionChecker.notDoing);
+
+        recordButton.setChecked(false);
+        playPauseButton.setChecked(false);
+    }
+
     private void startRecording() {
         String status = Environment.getExternalStorageState();
         if(status.equals("mounted")) {
@@ -188,7 +221,7 @@ public class Record {
             recorder.start();
             isRecording.setValue(ActionChecker.doing);
             recorder.setOnInfoListener(new RecorderStopListener());
-            toggleButton.setChecked(true);
+            recordButton.setChecked(true);
         }
     }
 
@@ -204,11 +237,12 @@ public class Record {
         if (isRecording.getValue() == ActionChecker.doing) {
             stopRecording();
         }
+        playPauseButton.setChecked(false);
     }
 
     private void stopRecording() {
         isRecording.setValue(ActionChecker.notDoing);
-        toggleButton.setChecked(false);
+        recordButton.setChecked(false);
         recorder.stop();
         Sample sample = samples.get(samples.size() - 1);
         sample.initializeSample();
@@ -217,6 +251,5 @@ public class Record {
             recorder.setMaxDuration(sample.getDuration());
             play();
         }
-        toggleButton.setChecked(false);
     }
 }

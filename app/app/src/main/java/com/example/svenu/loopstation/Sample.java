@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by svenu on 16-1-2018.
+ * Class to define a single recording sample. A sample has a mediaplayer which can play,
+ * pause and stop the sample. It also has a function to delete itself.
  */
 
 public class Sample {
@@ -40,8 +41,7 @@ public class Sample {
     }
 
     public File getSampleFile() {
-        File file = new File(path);
-        return file;
+        return new File(path);
     }
 
     private void initializeMediaPlayer() {
@@ -85,6 +85,13 @@ public class Sample {
             mediaPlayer.stop();
             mediaPlayer.release();
             isMediaPlayerInitialized = false;
+        }
+    }
+
+    public void delete() {
+        File file = new File(path);
+        if (file.delete()) {
+            Log.d("deleted", path);
         }
     }
 }

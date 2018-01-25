@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ToggleButton recordButton;
+    private ToggleButton playPauseButton;
     private DirectoryCreator directoryCreator;
     private Record record;
     private FileSaver fileSaver;
@@ -37,11 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         boolean isCover = intent.getBooleanExtra("isCover", false);
+        ActionBar actionBar = getSupportActionBar();
         if (isCover) {
-            getSupportActionBar().setTitle(intent.getStringExtra("title"));
+            if (actionBar != null) {
+                getSupportActionBar().setTitle(intent.getStringExtra("title"));
+            }
             setLyrics(intent.getStringExtra("url"));
         }
-        else {
+        else if (actionBar != null){
             getSupportActionBar().setTitle(R.string.sandbox_name);
         }
 
@@ -55,15 +60,11 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.buttonRecord: {
-                    record.buttonClicked();
+                    record.buttonRecordClicked();
                     break;
                 }
-                case R.id.buttonPlay: {
-                    record.play();
-                    break;
-                }
-                case R.id.buttonPause: {
-                    record.pause();
+                case R.id.buttonPlayPauseMain: {
+                    record.buttonPlayPauseClicked();
                     break;
                 }
                 case R.id.buttonStop: {
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.buttonSave: {
+                    record.pause();
                     fileSaver.chooseName();
                     break;
                 }
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         if (requestCode == 101 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             createDirectories();
         }
@@ -129,9 +131,7 @@ public class MainActivity extends AppCompatActivity {
         // If the user previously denied this permission then show a message explaining why
         // this permission is needed
         for (String requiredPermission: requiredPermissions) {
-            if (this.checkCallingOrSelfPermission(requiredPermission) == PackageManager.PERMISSION_GRANTED) {
-
-            } else {
+            if (this.checkCallingOrSelfPermission(requiredPermission) != PackageManager.PERMISSION_GRANTED) {
                 permissionsToRequest.add(requiredPermission);
             }
         }
@@ -145,8 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setButtonHandlers() {
         recordButton.setOnClickListener(btnClick);
-        findViewById(R.id.buttonPlay).setOnClickListener(btnClick);
-        findViewById(R.id.buttonPause).setOnClickListener(btnClick);
+        playPauseButton.setOnClickListener(btnClick);
         findViewById(R.id.buttonStop).setOnClickListener(btnClick);
         findViewById(R.id.buttonSave).setOnClickListener(btnClick);
     }
@@ -162,7 +161,8 @@ public class MainActivity extends AppCompatActivity {
         recordDirectory = pathName + recordingsDirectory;
         directoryCreator = new DirectoryCreator();
         recordButton = findViewById(R.id.buttonRecord);
-        record = new Record(this, pathName, fileFormat, recordButton);
+        playPauseButton = findViewById(R.id.buttonPlayPauseMain);
+        record = new Record(pathName, fileFormat, recordButton, playPauseButton);
         fileSaver = new FileSaver(this, recordDirectory, record);
     }
 }
