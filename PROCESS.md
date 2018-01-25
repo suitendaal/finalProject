@@ -32,3 +32,7 @@ Found a solution to the problem of day 5 and 6. When a user saves his recording 
 # Day 8
 
 Made some dialogframes. The one for the seekbar for playing audio does not work yet.
+
+# Day 9
+
+Got material design icons for some functions in the app.
