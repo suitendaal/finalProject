@@ -71,7 +71,7 @@ public class MyRecordingsActivity extends AppCompatActivity {
     }
 
     private AlertDialog.Builder loadAlertDialog(String fileName) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         alertDialogBuilder.setTitle("Do you want to delete " + fileName + "?");
         return alertDialogBuilder;
     }

@@ -2,5 +2,12 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ffffff</color>
+    <color name="colorButton">#c0bfb5</color>
+    <color name="colorButtonBackGroundTop">#010150</color>
+    <color name="colorButtonBackGroundBottom">#020076</color>
+    <color name="colorPlayRecording">#303030</color>
+    <color name="colorTextStandard">#ffffff</color>
+    <color name="colorBackGroundStandardCentre">#39379e</color>
+    <color name="colorBackGroundStandardBottom">#989eae</color>
 </resources>

@@ -1,81 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.svenu.loopstation.MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <ToggleButton
-            android:id="@+id/buttonRecord"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/recorder_selector"
-            android:textOff=""
-            android:textOn=""
-            app:layout_constraintEnd_toStartOf="@+id/buttonPlayPauseMain"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ToggleButton
-            android:id="@+id/buttonPlayPauseMain"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/play_pause_selector"
-            android:textOff=""
-            android:textOn=""
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/buttonStop"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/stop_shape"
-            app:layout_constraintEnd_toStartOf="@+id/buttonSave"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/buttonSave"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:background="@drawable/save_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@drawable/color_button_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/margin_layout"
+            android:layout_marginTop="@dimen/margin_layout"
+            android:layout_marginLeft="@dimen/margin_layout"
+            android:layout_marginRight="@dimen/margin_layout">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <ToggleButton
+                    android:id="@+id/buttonRecord"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="@dimen/button_height"
+                    android:background="@drawable/recorder_selector"
+                    android:textOff=""
+                    android:textOn="" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <ToggleButton
+                    android:id="@+id/buttonPlayPauseMain"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="@dimen/button_height"
+                    android:background="@drawable/play_pause_selector"
+                    android:textOff=""
+                    android:textOn="" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/buttonStop"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="@dimen/button_height"
+                    android:background="@drawable/stop_shape" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/buttonSave"
+                    android:layout_width="@dimen/button_width"
+                    android:layout_height="@dimen/button_height"
+                    android:background="@drawable/save_shape" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/color_backgroud_standard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_layout"
+            android:layout_marginRight="@dimen/margin_layout"
+            android:layout_marginBottom="@dimen/margin_layout"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/lyricTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abeezee"
+                android:textAlignment="center"
+                android:textColor="@color/colorTextStandard"
+                android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
 

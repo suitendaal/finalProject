@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ public class FileSaver {
     }
 
     public void chooseName() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.MyDialogTheme);
         AlertDialogCreator alertDialogCreator = new AlertDialogCreator(loadAlertDialog(alertDialogBuilder));
         alertDialogCreator.setNegativeListener("Cancel");
         alertDialogCreator.setPositiveListener("Ok");
@@ -69,10 +70,12 @@ public class FileSaver {
     private AlertDialog.Builder loadAlertDialog(AlertDialog.Builder alertDialogBuilder) {
         RelativeLayout relativeLayout = new RelativeLayout(context);
         editText = new EditText(context);
+        editText.setTextColor(context.getResources().getColor(R.color.colorTextStandard));
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(50, 50);
-        RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(30, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         editTextParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        editTextParams.setMargins(128, 0, 128, 0);
 
         relativeLayout.setLayoutParams(params);
         relativeLayout.addView(editText, editTextParams);

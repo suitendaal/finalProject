@@ -1,39 +1,52 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPlayRecording"
     android:orientation="vertical"
     tools:context="com.example.svenu.loopstation.PlayFragment">
-
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textAlignment="center"
-        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:layout_marginBottom="@dimen/margin_layout"
+        android:layout_marginLeft="@dimen/margin_layout"
+        android:layout_marginRight="@dimen/margin_layout"
+        android:layout_marginTop="@dimen/margin_layout"
+        android:orientation="vertical">
 
-        <ToggleButton
-            android:id="@+id/buttonPlayPauseRecords"
-            android:layout_width="60sp"
-            android:layout_height="60sp"
-            android:background="@drawable/play_pause_selector"
-            android:textOff=""
-            android:textOn="" />
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/colorButton"
+            android:textSize="24sp" />
 
-        <ToggleButton
-            android:id="@+id/toggleButton"
-            android:background="@drawable/replay_selector"
-            android:textOn=""
-            android:textOff=""
-            android:layout_width="60sp"
-            android:layout_height="60sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/buttonPlayPauseRecords"
+                android:layout_width="@dimen/button_play_width"
+                android:layout_height="@dimen/button_play_height"
+                android:background="@drawable/play_pause_selector"
+                android:textOff=""
+                android:textOn="" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="@dimen/button_play_width"
+                android:layout_height="@dimen/button_play_height"
+                android:background="@drawable/replay_selector"
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
