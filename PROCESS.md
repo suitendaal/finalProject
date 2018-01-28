@@ -36,3 +36,7 @@ Made some dialogframes. The one for the seekbar for playing audio does not work 
 # Day 9
 
 Got material design icons for some functions in the app.
+
+# Day 10
+
+Created background and style for background and buttons.
