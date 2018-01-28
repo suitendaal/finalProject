@@ -7,7 +7,10 @@
         <item name="android:navigationBarColor">@color/colorBackGroundStandardBottom</item>
     </style>
 
-    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/colorPlayRecording</item>
+    <style name="MyAlertDialogMaterialStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorTextStandard</item>
+        <item name="android:background">@color/colorButtonBackGroundTop</item>
+        <!--<item name="android:editTextColor">@color/colorTextStandard</item>-->
     </style>
 </resources>

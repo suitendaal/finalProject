@@ -10,4 +10,6 @@
     <color name="colorTextStandard">#ffffff</color>
     <color name="colorBackGroundStandardCentre">#39379e</color>
     <color name="colorBackGroundStandardBottom">#989eae</color>
+    <color name="colorRecording">#ff0000</color>
+    <color name="colorButtonPressed">#6b6b6b</color>
 </resources>

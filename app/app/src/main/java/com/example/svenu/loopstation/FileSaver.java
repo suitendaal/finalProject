@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -32,15 +33,15 @@ public class FileSaver {
     }
 
     public void chooseName() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.MyDialogTheme);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.MyAlertDialogMaterialStyle);
         AlertDialogCreator alertDialogCreator = new AlertDialogCreator(loadAlertDialog(alertDialogBuilder));
         alertDialogCreator.setNegativeListener("Cancel");
         alertDialogCreator.setPositiveListener("Ok");
-        alertDialogCreator.setButtonClickListener(new GobuttonClickListener());
+        alertDialogCreator.setButtonClickListener(new GoButtonClickListener());
         alertDialogCreator.create();
     }
 
-    private class GobuttonClickListener implements AlertDialogCreator.ButtonClickListener {
+    private class GoButtonClickListener implements AlertDialogCreator.ButtonClickListener {
         @Override
         public void onPositiveClick(DialogInterface dialog, int id) {
             String fileName = editText.getText().toString();

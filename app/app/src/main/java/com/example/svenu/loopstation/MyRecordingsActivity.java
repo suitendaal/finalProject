@@ -24,6 +24,7 @@ public class MyRecordingsActivity extends AppCompatActivity {
 
     private ListView listView;
     private TextView fileTextView;
+    private TextView deleteFileTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,8 @@ public class MyRecordingsActivity extends AppCompatActivity {
         if (recordToDelete.isDirectory())
         {
             String[] children = recordToDelete.list();
-            for (int j = 0; j < children.length; j++)
-            {
-                new File(recordToDelete, children[j]).delete();
+            for (String child : children) {
+                new File(recordToDelete, child).delete();
             }
         }
         boolean deleted = recordToDelete.delete();
@@ -54,8 +54,8 @@ public class MyRecordingsActivity extends AppCompatActivity {
     private class GoAlertButtonClickListener implements AlertDialogCreator.ButtonClickListener {
         @Override
         public void onPositiveClick(DialogInterface dialog, int id) {
-            deleteRecording(fileTextView.getTag().toString());
-            Toast.makeText(getApplicationContext(), "Deleted " + fileTextView.getText().toString(), Toast.LENGTH_SHORT).show();
+            deleteRecording(deleteFileTextView.getTag().toString());
+            Toast.makeText(getApplicationContext(), "Deleted " + deleteFileTextView.getText().toString(), Toast.LENGTH_SHORT).show();
             loadFilesInListView();
         }
 
@@ -71,7 +71,7 @@ public class MyRecordingsActivity extends AppCompatActivity {
     }
 
     private AlertDialog.Builder loadAlertDialog(String fileName) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyAlertDialogMaterialStyle);
         alertDialogBuilder.setTitle("Do you want to delete " + fileName + "?");
         return alertDialogBuilder;
     }
@@ -141,8 +141,8 @@ public class MyRecordingsActivity extends AppCompatActivity {
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            TextView fileTextView = view.findViewById(R.id.textViewFile);
-            AlertDialog.Builder alertDialogBuilder = loadAlertDialog(fileTextView.getText().toString());
+            deleteFileTextView = view.findViewById(R.id.textViewFile);
+            AlertDialog.Builder alertDialogBuilder = loadAlertDialog(deleteFileTextView.getText().toString());
             AlertDialogCreator alertDialogCreator = new AlertDialogCreator(alertDialogBuilder);
             alertDialogCreator.setPositiveListener("Yes");
             alertDialogCreator.setNegativeListener("No");
