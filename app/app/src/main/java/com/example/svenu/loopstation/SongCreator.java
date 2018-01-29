@@ -1,24 +1,14 @@
 package com.example.svenu.loopstation;
 
-import android.app.Activity;
-import android.net.Uri;
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
- * Created by svenu on 18-1-2018.
+ * Class which copies all the recorded samples to another directory. It saves the recorded song.
  */
 
 public class SongCreator {
@@ -27,9 +17,12 @@ public class SongCreator {
     }
 
     public void createSong(String fileName, ArrayList<File> files) throws IOException {
+
+        // Create a new directory in the given path.
         DirectoryCreator directoryCreator = new DirectoryCreator();
         directoryCreator.createDirectory(fileName);
 
+        // Copy every sample to this new created directory.
         for (File file : files) {
             String pathName = fileName + "/" + file.getName();
             FileInputStream fileInputStream = new FileInputStream(file);

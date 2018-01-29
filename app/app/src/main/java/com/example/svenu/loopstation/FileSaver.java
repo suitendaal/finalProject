@@ -23,16 +23,15 @@ public class FileSaver {
     private EditText editText;
     private String path;
     private Record record;
-    private boolean isNameAvailable;
 
     public FileSaver(Context aContext, String aPath, Record aRecord) {
         context = aContext;
         path = aPath;
         record = aRecord;
-        isNameAvailable = false;
     }
 
     public void chooseName() {
+        // Function to create an alertdialog.
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.MyAlertDialogMaterialStyle);
         AlertDialogCreator alertDialogCreator = new AlertDialogCreator(loadAlertDialog(alertDialogBuilder));
         alertDialogCreator.setNegativeListener("Cancel");
@@ -44,13 +43,19 @@ public class FileSaver {
     private class GoButtonClickListener implements AlertDialogCreator.ButtonClickListener {
         @Override
         public void onPositiveClick(DialogInterface dialog, int id) {
-            String fileName = editText.getText().toString();
+            // Save the record.
+
+            // Get the right path to save the file.
+            String fileName;
+            fileName = editText.getText().toString();
             fileName = path + "/" + fileName;
-            Log.d("fileName", fileName);
-            isNameAvailable = isFileNameAvailable(fileName);
-            if (isNameAvailable) {
+
+            // Check if this path is available, then save the record.
+            if (isFileNameAvailable(fileName)) {
                 record.saveRecord(fileName);
                 Toast.makeText(context, "Recording saved", Toast.LENGTH_SHORT).show();
+
+                // Delete all of the samples from the sandbox mode, so the user can start over.
                 record.delete();
             }
             else {
@@ -60,34 +65,13 @@ public class FileSaver {
 
         @Override
         public void onNegativeClick(DialogInterface dialog, int id) {
+            // Cancel the dialog.
             dialog.cancel();
         }
-
-        @Override
-        public void onNeutralClick(DialogInterface dialog, int id) {
-        }
-    }
-
-    private AlertDialog.Builder loadAlertDialog(AlertDialog.Builder alertDialogBuilder) {
-        RelativeLayout relativeLayout = new RelativeLayout(context);
-        editText = new EditText(context);
-        editText.setTextColor(context.getResources().getColor(R.color.colorTextStandard));
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(50, 50);
-        RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        editTextParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        editTextParams.setMargins(128, 0, 128, 0);
-
-        relativeLayout.setLayoutParams(params);
-        relativeLayout.addView(editText, editTextParams);
-
-        alertDialogBuilder.setTitle("Choose a name");
-        alertDialogBuilder.setView(relativeLayout);
-
-        return alertDialogBuilder;
     }
 
     private boolean isFileNameAvailable(String fileName) {
+        // Returns true if the path to save the file is legit.
         if (fileName.equals("")) {
             return false;
         }
@@ -95,5 +79,31 @@ public class FileSaver {
             File file = new File(fileName);
             return !file.exists();
         }
+    }
+
+    private AlertDialog.Builder loadAlertDialog(AlertDialog.Builder alertDialogBuilder) {
+        // Function to create the alertdialog layout.
+
+        RelativeLayout relativeLayout = new RelativeLayout(context);
+
+        // Create an edittext.
+        editText = new EditText(context);
+        editText.setTextColor(context.getResources().getColor(R.color.colorTextStandard));
+
+        // Set the layout parameters.
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(50, 50);
+        RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        editTextParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        editTextParams.setMargins(128, 0, 128, 0);
+
+        // Add the layout parameters to the layout.
+        relativeLayout.setLayoutParams(params);
+        relativeLayout.addView(editText, editTextParams);
+
+        // Add the layout to the alertdialog.
+        alertDialogBuilder.setTitle("Choose a name");
+        alertDialogBuilder.setView(relativeLayout);
+
+        return alertDialogBuilder;
     }
 }

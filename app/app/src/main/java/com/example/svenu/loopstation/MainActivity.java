@@ -13,19 +13,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
+/**
+ * Activity where the user can record samples and listen to them. The user can also see lyrics of a
+ * song when he searched for it. At the end the user can save the recorded samples.
+ */
 
 public class MainActivity extends AppCompatActivity {
 
-    private ToggleButton recordButton;
-    private ToggleButton playPauseButton;
     private DirectoryCreator directoryCreator;
-    private Record record;
     private FileSaver fileSaver;
     private String pathName;
+    private ToggleButton playPauseButton;
+    private Record record;
+    private ToggleButton recordButton;
     private String recordDirectory;
 
     private final String fileFormat = "m4a";
@@ -38,42 +43,66 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
+
+        // If activity is started via the Search activity isCover equals true.
         boolean isCover = intent.getBooleanExtra("isCover", false);
         ActionBar actionBar = getSupportActionBar();
+
         if (isCover) {
+            // Set actionbar title as song name and load lyrics.
             if (actionBar != null) {
                 getSupportActionBar().setTitle(intent.getStringExtra("title"));
             }
             setLyrics(intent.getStringExtra("url"));
         }
-        else if (actionBar != null){
-            getSupportActionBar().setTitle(R.string.sandbox_name);
+        else {
+            // Set actionbar title and load the icon as background.
+            if (actionBar != null){
+                getSupportActionBar().setTitle(R.string.sandbox_name);
+            }
+            setBackGround();
         }
 
+        // When the app is opened for the first time, ask for permissions
         requestPermission();
         setVariables();
+
+        // If the directories the app uses doesn't exist yet, create them.
         createDirectories();
+
+        // Add functions to the buttons.
         setButtonHandlers();
     }
 
     private View.OnClickListener btnClick = new View.OnClickListener() {
+        // Functions when a button is clicked.
+
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.buttonRecord: {
+                    // Tell the record the button is clicked.
                     record.buttonRecordClicked();
                     break;
                 }
                 case R.id.buttonPlayPauseMain: {
+                    // Tell the record the button is clicked.
                     record.buttonPlayPauseClicked();
                     break;
                 }
                 case R.id.buttonStop: {
+                    // Stop playing the recorded samples.
                     record.stop();
                     break;
                 }
                 case R.id.buttonSave: {
-                    record.pause();
-                    fileSaver.chooseName();
+                    // When samples are recorded, save them.
+                    if (record.getSampleSize() > 0) {
+                        record.pause();
+                        fileSaver.chooseName();
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "No samples recorded", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 }
             }
@@ -81,32 +110,45 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void createDirectory(String directoryPath) {
+        // Create a directory with a given path.
         directoryCreator.createDirectory(directoryPath);
     }
 
     private void createDirectories() {
+        // Create directories the app uses.
         createDirectory(pathName);
         createDirectory(recordDirectory);
+
+        // Empty the main directory, except for recordDirectory.
         emptyDirectory(pathName, recordDirectory);
     }
 
     private void emptyDirectory(String pathName, String directoryToKeep) {
+        // Empty a directory and keep one given directory.
         directoryCreator.emptyDirectory(pathName, directoryToKeep);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Load the menu with the right menuoptions.
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
 
-        new MenuVisibility(menu, inflater, true);
+        // Tell the menu which menuoptions must be visible.
+        new MenuVisibility(this, menu, inflater);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        // When an option is clicked, load a new activity.
         MenuOption menuOption = new MenuOption(item);
         menuOption.loadActivity(this);
+
+        // Close and delete the record.
         record.close();
+        record.delete();
+
+        // Ensure the directories still exists, that the user didn't do anything stupid.
         createDirectories();
         return true;
     }
@@ -114,12 +156,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
+        // If permissions are given, create the directories.
         if (requestCode == 101 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             createDirectories();
         }
     }
 
     public void requestPermission() {
+        // Function to request permission when they are not given yet.
 
         // https://stackoverflow.com/questions/43996635/how-to-grant-android-permission-record-audio-permissions-to-android-shell-user
         String[] requiredPermissions = {
@@ -143,7 +187,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setBackGround() {
+        //TODO
+    }
+
     private void setButtonHandlers() {
+        // Add a listener to all of the buttons.
         recordButton.setOnClickListener(btnClick);
         playPauseButton.setOnClickListener(btnClick);
         findViewById(R.id.buttonStop).setOnClickListener(btnClick);
@@ -151,12 +200,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setLyrics(String url) {
+        // Function to load the lyrics from html to text.
         TextView lyricTextView = findViewById(R.id.lyricTextView);
         LyricSetter lyricSetter = new LyricSetter(this);
         lyricSetter.setLyrics(url, lyricTextView);
     }
 
     private void setVariables() {
+        // Function to set al the global variables.
         pathName = Environment.getExternalStorageDirectory().getAbsolutePath() + appDirectory;
         recordDirectory = pathName + recordingsDirectory;
         directoryCreator = new DirectoryCreator();
@@ -164,5 +215,12 @@ public class MainActivity extends AppCompatActivity {
         playPauseButton = findViewById(R.id.buttonPlayPauseMain);
         record = new Record(pathName, fileFormat, recordButton, playPauseButton);
         fileSaver = new FileSaver(this, recordDirectory, record);
+    }
+
+    @Override
+    protected void onStop() {
+        // When the app stops, close the record.
+        record.close();
+        super.onStop();
     }
 }

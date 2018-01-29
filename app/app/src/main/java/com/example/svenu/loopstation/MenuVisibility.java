@@ -1,30 +1,36 @@
 package com.example.svenu.loopstation;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.ConcurrentModificationException;
+
 /**
- * Created by svenu on 10-1-2018.
+ * Class to tell the activity if the search-menuoption should be visible.
  */
 
 public class MenuVisibility {
-    private Menu menu;
-    private boolean searchVisibility;
 
-    public MenuVisibility(Menu aMenu, MenuInflater inflater, boolean aSearchVisibility) {
-        menu = aMenu;
-        searchVisibility = aSearchVisibility;
+    public MenuVisibility(Activity activity, Menu menu, MenuInflater inflater) {
 
+        // Inflate the menu.
         inflater.inflate(R.menu.actions, menu);
-        setVisibility();
-    }
 
-    private void setVisibility() {
-        MenuItem searchItem = menu.findItem(R.id.searchMenu);
-        if (searchItem != null) {
-            searchItem.setVisible(searchVisibility);
+        // Find out which menuitem to set invisible
+        MenuItem menuItem = null;
+        if (activity instanceof SearchActivity) {
+            menuItem = menu.findItem(R.id.searchMenu);
+        } else if (activity instanceof MyRecordingsActivity) {
+            menuItem = menu.findItem(R.id.recordingsMenu);
+        } else if (activity instanceof AboutActivity) {
+            menuItem = menu.findItem(R.id.aboutMenu);
+        }
+
+        // Set menuitem invisible.
+        if (menuItem != null) {
+            menuItem.setVisible(false);
         }
     }
 }

@@ -20,16 +20,17 @@ import java.util.ArrayList;
 
 public class Record {
 
-    private String pathName;
     private String fileFormat;
-    private ToggleButton recordButton;
-    private ToggleButton playPauseButton;
-    private MediaRecorder recorder;
-    private ArrayList<Sample> samples;
     private boolean firstRecord;
     private ActionChecker isPlaying;
     private ActionChecker isRecording;
+    private String pathName;
+    private ToggleButton playPauseButton;
+    private ArrayList<Sample> samples;
+    private ToggleButton recordButton;
+    private MediaRecorder recorder;
 
+    // Bit and samplerate for recording.
     private final int bitRate = 16;
     private final int sampleRate = 44100;
 
@@ -44,7 +45,12 @@ public class Record {
     public void buttonRecordClicked() {
         // if recording, stop recording
         if (isRecording.getValue() == ActionChecker.doing) {
-            stopRecording();
+            try {
+                stopRecording();
+            }
+            catch (RuntimeException e) {
+                e.printStackTrace();
+            }
         }
         else if (isRecording.getValue() == ActionChecker.notDoing) {
             // if not recording and not playing (stop or pause), start recording
@@ -65,14 +71,20 @@ public class Record {
     }
 
     public void close() {
+        // Stop playing and stop recording.
         stop();
         if (isRecording.getValue() != ActionChecker.notDoing) {
-            stopRecording();
+            try {
+                stopRecording();
+            }
+            catch (RuntimeException e) {
+                e.printStackTrace();
+            }
         }
-        isRecording.setValue(ActionChecker.notDoing);
     }
 
     public void buttonPlayPauseClicked() {
+        // Tell the record to play or pause the samples.
         if (isPlaying.getValue() == ActionChecker.doing) {
             pause();
         }
@@ -82,6 +94,7 @@ public class Record {
     }
 
     public void delete() {
+        // Function to reset the record.
         for (Sample sample: samples) {
             if (sample.isPlayable()) {
                 sample.stop();
@@ -91,20 +104,29 @@ public class Record {
         setVariables();
     }
 
+    public int getSampleSize() {
+        // Get number of samples.
+        return samples.size();
+    }
+
     private class GoMediaPlayerCompleted implements MediaPlayer.OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
-            for (Sample sample: samples) {
-                if (sample.isPlayable()) {
-                    sample.stop();
+            // When the first sample is completed, stop all of the samples and play them again.
+            if (isPlaying.getValue() == ActionChecker.doing) {
+                for (Sample sample : samples) {
+                    if (sample.isPlayable()) {
+                        sample.stop();
+                    }
                 }
+                isPlaying.setValue(ActionChecker.notDoing);
+                play();
             }
-            isPlaying.setValue(ActionChecker.notDoing);
-            play();
         }
     }
 
     private void initializeRecorder(String path) {
+        // Function to initialize the mediarecorder.
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
@@ -121,6 +143,7 @@ public class Record {
     private class IsPlayingChangeListener implements ActionChecker.VariableChangeListener {
         @Override
         public void onVariableChanged(ActionChecker anIsPlaying) {
+            // If recording is available, start recording.
             if (isPlaying.getValue() == ActionChecker.notDoing && isRecording.getValue() == ActionChecker.goingToDo) {
                 startRecording();
             }
@@ -128,34 +151,44 @@ public class Record {
     }
 
     public void pause() {
+        // Function to pause the samples.
+
         if (isPlaying.getValue() == ActionChecker.doing) {
+
+            // Pause the samples
             for (Sample sample: samples) {
                 sample.pause();
             }
             isPlaying.setValue(ActionChecker.goingToDo);
-            if (isRecording.getValue() == ActionChecker.doing) {
-                stopRecording();
-            }
-        }
-        else if (isPlaying.getValue() == ActionChecker.goingToDo) {
-            for (Sample sample: samples) {
-                sample.play();
-            }
-            isPlaying.setValue(ActionChecker.doing);
             playPauseButton.setChecked(false);
+
+            // Stop recording
+            if (isRecording.getValue() == ActionChecker.doing) {
+                try {
+                    stopRecording();
+                }
+                catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
+            }
+            recordButton.setChecked(false);
         }
     }
 
     private void play() {
+        // Function to play the samples.
         if (isPlaying.getValue() != ActionChecker.doing) {
             if (samples.size() > 0) {
+
+                // Play all the samples.
                 for (Sample sample : samples) {
                     if (sample.isPlayable()) {
                         Log.d("playing ", sample.getPath());
                         sample.play();
-                        Log.d("duration", sample.getDuration() + "");
                     }
                 }
+
+                // Wait for when the first sample is finished.
                 Sample primarySample = samples.get(0);
                 if (primarySample.isPlayable()) {
                     isPlaying.setValue(ActionChecker.doing);
@@ -173,19 +206,30 @@ public class Record {
         @Override
         public void onInfo(MediaRecorder mediaRecorder, int what, int extra) {
             if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                // When max recording duration is reached, ensure the recorder stops recording.
                 Log.d("max duration", "reached");
-                stopRecording();
+                try {
+                    stopRecording();
+                }
+                catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     public void saveRecord(String fileName) {
+        // Function to save the record.
         close();
+
+        // Get all the sample files.
         ArrayList<File> files = new ArrayList<>();
         for (Sample sample: samples) {
             File file = sample.getSampleFile();
             files.add(file);
         }
+
+        // Create a song in the given path.
         SongCreator songCreator = new SongCreator();
         try {
             songCreator.createSong(fileName, files);
@@ -195,29 +239,42 @@ public class Record {
     }
 
     private void setVariables() {
+        // Function to set global variables.
         recorder = new MediaRecorder();
         samples = new ArrayList<>();
         firstRecord = true;
         isPlaying = new ActionChecker(ActionChecker.notDoing);
         isRecording = new ActionChecker(ActionChecker.notDoing);
 
+        // Set buttons unchecked.
         recordButton.setChecked(false);
         playPauseButton.setChecked(false);
     }
 
-    private void startRecording() {
+    private void startRecording() throws IllegalStateException {
+        // Function to start recording.
         String status = Environment.getExternalStorageState();
         if(status.equals("mounted")) {
             String path = pathName + "/" + samples.size() + "." + fileFormat;
+
+            // Check if there exist samples already.
             if (!firstRecord) {
+                // If samples are pausing, stop the samples so they start playing at their begin.
                 if (isPlaying.getValue() == ActionChecker.goingToDo) {
                     stop();
                 }
+
+                // Play the samples.
                 play();
             }
 
+            // Initialize the recorder.
             initializeRecorder(path);
+
+            // Create a new sample.
             samples.add(new Sample(path));
+
+            // Start recording.
             recorder.start();
             isRecording.setValue(ActionChecker.doing);
             recorder.setOnInfoListener(new RecorderStopListener());
@@ -226,6 +283,9 @@ public class Record {
     }
 
     public void stop() {
+        // Function to stop playing, recording.
+
+        // Stop the samples from playing.
         if (isPlaying.getValue() != ActionChecker.notDoing) {
             for (Sample sample: samples) {
                 if (sample.isPlayable()) {
@@ -234,18 +294,35 @@ public class Record {
             }
         }
         isPlaying.setValue(ActionChecker.notDoing);
-        if (isRecording.getValue() == ActionChecker.doing) {
-            stopRecording();
-        }
         playPauseButton.setChecked(false);
+
+        // Stop the samples from recording.
+        if (isRecording.getValue() == ActionChecker.doing) {
+            try {
+                stopRecording();
+            }
+            catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+        }
+        recordButton.setChecked(false);
     }
 
-    private void stopRecording() {
+    private void stopRecording() throws RuntimeException {
+        // Function to stop recording.
+
+        // Stop recording.
+        if (isRecording.getValue() == ActionChecker.doing) {
+                recorder.stop();
+        }
         isRecording.setValue(ActionChecker.notDoing);
         recordButton.setChecked(false);
-        recorder.stop();
+
+        // Initialize the new sample.
         Sample sample = samples.get(samples.size() - 1);
         sample.initializeSample();
+
+        // If it is the first sample, set max duration time.
         if (firstRecord) {
             firstRecord = false;
             recorder.setMaxDuration(sample.getDuration());

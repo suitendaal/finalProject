@@ -1,12 +1,13 @@
 package com.example.svenu.loopstation;
 
 /**
- * Created by svenu on 10-1-2018.
+ * Class which represents a song searched in searchactivity. It has an artist, a title and
+ * a genius url.
  */
 
 public class Song {
-    private String title;
     private String artist;
+    private String title;
     private String url;
 
     public Song(String aTitle, String anArtist, String anUrl) {
@@ -16,14 +17,17 @@ public class Song {
     }
 
     public String getArtist() {
+        // Returns the artist.
         return artist;
     }
 
     public String getTitle() {
+        // Returns the title.
         return title;
     }
 
     public String getUrl() {
+        // Returns the url.
         return url;
     }
 }

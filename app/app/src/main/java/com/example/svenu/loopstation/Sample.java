@@ -13,11 +13,11 @@ import java.io.IOException;
 
 public class Sample {
 
-    private String path;
     private int duration;
-    private MediaPlayer mediaPlayer;
+    private String path;
     private boolean isMediaPlayerInitialized = false;
     private boolean isPlayable = false;
+    private MediaPlayer mediaPlayer;
 
     public Sample(String aPath) {
         path = aPath;
@@ -25,10 +25,14 @@ public class Sample {
     }
 
     public int getDuration() {
+        // Returns the duration in milliseconds of a sample.
         return duration;
     }
 
     public MediaPlayer getMediaPlayer() {
+        // Returns the mediaplayer of the sample.
+
+        // If the mediaplayer is not initialized yet, initialize.
         if (!isMediaPlayerInitialized) {
             initializeMediaPlayer();
             isMediaPlayerInitialized = true;
@@ -37,14 +41,18 @@ public class Sample {
     }
 
     public String getPath() {
+        // Returns the absolute path.
         return path;
     }
 
     public File getSampleFile() {
+        // Returns the file of the sample.
         return new File(path);
     }
 
     private void initializeMediaPlayer() {
+        // Function to initialize the sample's mediaplayer.
+
         Log.d("initializeMediaPlayer", path);
         mediaPlayer = new MediaPlayer();
         try {
@@ -57,22 +65,29 @@ public class Sample {
     }
 
     public void initializeSample() {
+        // Function to initialize the sample.
+
         initializeMediaPlayer();
         duration = mediaPlayer.getDuration();
         isPlayable= true;
     }
 
     public boolean isPlayable() {
+        // Returns if the sample is initialized.
         return isPlayable;
     }
 
     public void pause() {
+        // Pauses the sample.
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }
     }
 
     public void play() {
+        // Play the sample.
+
+        // First ensure the mediaplayer is initialized.
         if (!isMediaPlayerInitialized)
         {
             initializeMediaPlayer();
@@ -81,6 +96,9 @@ public class Sample {
     }
 
     public void stop() {
+        // Stop playing the sample.
+
+        // Release the mediaplayer.
         if (isMediaPlayerInitialized) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -89,6 +107,8 @@ public class Sample {
     }
 
     public void delete() {
+        // Function to delete the sample.
+
         File file = new File(path);
         if (file.delete()) {
             Log.d("deleted", path);

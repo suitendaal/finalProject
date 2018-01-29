@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Created by svenu on 16-1-2018.
+ * Adapter to show recordings in a listview.
  */
 
 public class RecordingsAdapter extends ArrayAdapter {
@@ -30,11 +30,16 @@ public class RecordingsAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        // Inflate the rootview
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rootView = layoutInflater.inflate(R.layout.row_recording, parent, false);
 
+        // Initialize textview and data.
         TextView fileTitleTextView = rootView.findViewById(R.id.textViewFile);
         File recording = recordings.get(position);
+
+        // Set the texts and tags.
         fileTitleTextView.setText(recording.getName());
         fileTitleTextView.setTag(recording.getAbsolutePath());
 

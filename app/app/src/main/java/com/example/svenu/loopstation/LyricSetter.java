@@ -1,6 +1,7 @@
 package com.example.svenu.loopstation;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,10 +14,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 /**
- * Created by svenu on 16-1-2018.
+ * Class which parses the html until the lyrics are kept.
  */
 
 public class LyricSetter {
+
     private Context context;
 
     public LyricSetter(Context aContext) {
@@ -24,8 +26,12 @@ public class LyricSetter {
     }
 
     private String responseToLyrics(String response) {
+        // Function to convert raw html to lyrics.
+
+        // Lyrics start at div class lyrics.
         String lyrics = response.split("<div class=\"lyrics\">\n")[1];
 
+        // Count the div and /div to check where the lyrics end.
         String div = "<div";
         int divLen = div.length();
         String endDiv = "</div";
@@ -48,20 +54,23 @@ public class LyricSetter {
             }
             lyricsIndex += 1;
         }
+
+        // Delete everything between < and >
         lyrics = lyrics.replaceAll("(?s)<.*?>", "");
-        lyrics = lyrics.replace("    \n      \n      ", "");
 
-        Log.d("substring", unEscapeString(lyrics.substring(0, 2)));
-
-        while (lyrics.substring(0, 1).equals("\n")) {
+        // Delete spaces and enters in front of the string.
+        while (lyrics.substring(0, 1).equals(" ") || lyrics.substring(0,1).equals("\n")) {
             lyrics = lyrics.substring(1);
+            // Log the first 10 characters.
             Log.d("lyrics", unEscapeString(lyrics));
         }
 
+        // Delete spaces and enters at the end of the string.
         lyricsLength = lyrics.length();
         while (lyrics.substring(lyricsLength - 1, lyricsLength).equals(" ") || lyrics.substring(lyricsLength - 1, lyricsLength).equals("\n")) {
             lyrics = lyrics.substring(0, lyricsLength - 1);
             lyricsLength = lyrics.length();
+            // Log the last 10 characters.
             Log.d("end", unEscapeString(lyrics.substring(lyricsLength - 10, lyricsLength)));
         }
 
@@ -76,21 +85,25 @@ public class LyricSetter {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
+                        // Convert html to lyrics.
                         String lyrics = responseToLyrics(response);
                         lyricTextView.setText(lyrics);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // If the request failed, let the user know.
                 Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
-        // Add the request to the RequestQueue.
+
+        // Add the request to the queue.
         queue.add(stringRequest);
     }
 
-    public static String unEscapeString(String s){
+    @NonNull
+    private static String unEscapeString(String s){
+        // Function to show escapecharacters.
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<s.length(); i++)
             switch (s.charAt(i)){

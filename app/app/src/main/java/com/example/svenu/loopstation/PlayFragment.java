@@ -22,28 +22,27 @@ import java.util.ArrayList;
 
 
 /**
- * A simple subclass.
+ * Fragment to play and loop a saved recording.
  */
 public class PlayFragment extends DialogFragment {
 
-    private View rootView;
-    private Sample primarySample;
-    private ArrayList<Sample> samples;
-    private ToggleButton playPauseButton;
-    private ToggleButton loopToggle;
-    private TextView textView;
     private boolean isPlaying;
     private boolean isLooping;
-    private String songTitle;
+    private ToggleButton loopToggle;
+    private ToggleButton playPauseButton;
+    private Sample primarySample;
+    private View rootView;
+    private ArrayList<Sample> samples;
 
     public PlayFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_play, container, false);
+
+        // Set the global variables and add listeners to the buttons.
         setVariables();
         setButtonHandlers();
         play();
@@ -51,6 +50,8 @@ public class PlayFragment extends DialogFragment {
     }
 
     private class GoPlayPauseClickListener implements CompoundButton.OnCheckedChangeListener {
+        // Tell the samples to play or pause.
+
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean pressed) {
             if (pressed) {
@@ -64,11 +65,13 @@ public class PlayFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        // Stop playing when the fragment is dismissed
         stop();
         super.onDismiss(dialog);
     }
 
     private void pause() {
+        // Pause all the samples.
         if (isPlaying) {
             for (Sample sample : samples) {
                 sample.pause();
@@ -79,6 +82,7 @@ public class PlayFragment extends DialogFragment {
     }
 
     private void play() {
+        // Play all the samples.
         if (!isPlaying) {
             for (Sample sample : samples) {
                 sample.play();
@@ -92,7 +96,10 @@ public class PlayFragment extends DialogFragment {
     private class PlayCompletedListener implements MediaPlayer.OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
+            // When the first sample is completed stop all the samples.
             stop();
+
+            // If the user wants to loop start playing again.
             if (isLooping) {
                 play();
             }
@@ -100,11 +107,13 @@ public class PlayFragment extends DialogFragment {
     }
 
     private void setButtonHandlers() {
+        // Add listeners to the buttons.
         playPauseButton.setOnCheckedChangeListener(new GoPlayPauseClickListener());
         loopToggle.setOnCheckedChangeListener(new ToggleChangeListener());
     }
 
     private void setSamples(String path) {
+        // Put the samples in a list.
         File directory = new File(path);
         File[] files = directory.listFiles();
         for (File file: files) {
@@ -115,20 +124,28 @@ public class PlayFragment extends DialogFragment {
     }
 
     private void setVariables() {
+        // Buttons and textview.
         playPauseButton = rootView.findViewById(R.id.buttonPlayPauseRecords);
         loopToggle = rootView.findViewById(R.id.toggleButton);
-        textView = rootView.findViewById(R.id.textViewTitle);
-        samples = new ArrayList<>();
+        TextView textView = rootView.findViewById(R.id.textViewTitle);
+
         Bundle args = getArguments();
+
+        // Load samples.
+        samples = new ArrayList<>();
         String path = args.getString("path");
-        songTitle = args.getString("songTitle");
-        textView.setText(songTitle);
         setSamples(path);
+
+        // Set title in textview.
+        String songTitle = args.getString("songTitle");
+        textView.setText(songTitle);
+
         isPlaying = false;
         isLooping = false;
     }
 
     private void stop() {
+        // Stop playing all the samples.
         if (isPlaying) {
             for (Sample sample : samples) {
                 sample.stop();
@@ -141,6 +158,7 @@ public class PlayFragment extends DialogFragment {
     private class ToggleChangeListener implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            // Set if the user wants to loop.
             isLooping = b;
         }
     }
