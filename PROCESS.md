@@ -40,3 +40,7 @@ Got material design icons for some functions in the app.
 # Day 10
 
 Created background and style for background and buttons.
+
+# Day 11
+
+Commented the whole code and fixed some bugs.
