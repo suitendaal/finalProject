@@ -74,6 +74,8 @@ public class LyricSetter {
             Log.d("end", unEscapeString(lyrics.substring(lyricsLength - 10, lyricsLength)));
         }
 
+        lyrics = lyrics.replace("&amp;", "&");
+
         return lyrics;
     }
 
