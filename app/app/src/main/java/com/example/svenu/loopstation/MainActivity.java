@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -27,11 +28,13 @@ public class MainActivity extends AppCompatActivity {
 
     private DirectoryCreator directoryCreator;
     private FileSaver fileSaver;
+    private ImageView iconView;
     private String pathName;
     private ToggleButton playPauseButton;
     private Record record;
     private ToggleButton recordButton;
     private String recordDirectory;
+    private View scrollView;
 
     private final String fileFormat = "m4a";
     public static final String appDirectory = "/loopStation";
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setVariables();
         Intent intent = getIntent();
 
         // If activity is started via the Search activity isCover equals true.
@@ -56,16 +60,16 @@ public class MainActivity extends AppCompatActivity {
             setLyrics(intent.getStringExtra("url"));
         }
         else {
-            // Set actionbar title and load the icon as background.
+            // Set actionbar title and load the icon_squared as background.
             if (actionBar != null){
                 getSupportActionBar().setTitle(R.string.sandbox_name);
             }
-            setBackGround();
         }
+        // Show lyrics or icon.
+        setBackGround(isCover);
 
         // When the app is opened for the first time, ask for permissions
         requestPermission();
-        setVariables();
 
         // If the directories the app uses doesn't exist yet, create them.
         createDirectories();
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         fileSaver.chooseName();
                     }
                     else {
+                        // When no samples are recorded it is not possible to save.
                         Toast.makeText(MainActivity.this, "No samples recorded", Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -127,6 +132,15 @@ public class MainActivity extends AppCompatActivity {
         // Empty a directory and keep one given directory.
         directoryCreator.emptyDirectory(pathName, directoryToKeep);
     }
+
+    private View.OnLongClickListener iconClicked = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            // Easter egg: show who created the icon.
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.icon_toast), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -187,8 +201,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setBackGround() {
-        //TODO
+    private void setBackGround(boolean isCover) {
+        // Sets the background as lyrics or as icon.
+        if (isCover) {
+            iconView.setVisibility(View.GONE);
+            scrollView.setVisibility(View.VISIBLE);
+        }
+        else {
+            iconView.setImageResource(R.drawable.icon_shape);
+            iconView.setOnLongClickListener(iconClicked);
+        }
     }
 
     private void setButtonHandlers() {
@@ -211,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
         pathName = Environment.getExternalStorageDirectory().getAbsolutePath() + appDirectory;
         recordDirectory = pathName + recordingsDirectory;
         directoryCreator = new DirectoryCreator();
+        iconView = findViewById(R.id.iconView);
+        scrollView = findViewById(R.id.lyricScrollView);
         recordButton = findViewById(R.id.buttonRecord);
         playPauseButton = findViewById(R.id.buttonPlayPauseMain);
         record = new Record(pathName, fileFormat, recordButton, playPauseButton);

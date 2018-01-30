@@ -4,6 +4,15 @@
     <string name="sandbox_name">Sandbox</string>
     <string name="recordings_name">My recordings</string>
     <string name="about_name">About</string>
-    <string name="instructions">TODO: here come the instructions</string>
+    <string name="icon_toast">Icon made by Christian Bijvoets</string>
+    <string name="instructions">
+        Made by Sven Uitendaal as a project at the minor programming at the UvA.
+        \n\nYou can search songs to see lyrics, record and some samples and save the total record.
+        \n\nStart recording by pressing the record button. Stop recording by pressing it again.
+        When the first sample is recorded the recorder starts recording at the start of the loop
+        and the maximum sample recording time is the duration of the first sample.
+        \n\nListen to your recorded songs in My recordings. You can play them once or you can loop them.
+        On long press you can delete a recording.
+    </string>
     <string name="no_samples">No samples recorded, please record samples first</string>
 </resources>
