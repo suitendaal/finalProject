@@ -1,5 +1,6 @@
-# Acapella Cover Loop
+# LoopStation
 
+Made by Sven Uitendaal.
 
 ## Problem statement
 
@@ -46,6 +47,27 @@ I want to use the audio recorder and I want to save the records.
 
 * Making a loop. Once recorded one round, it has to be played the next time the loop plays.
 * At the end the file has to be saved to a directory in the mobile phone.
+
+
+## Purpose
+
+The purpose of this app is to loop recorded audio and make covers this way.
+
+
+## Screenshots
+
+![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58.jpeg)
+![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(1).jpeg)
+![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(2).jpeg)
+![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(3).jpeg)
+![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(4).jpeg)
+![alt text](https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(5).jpeg)
+
+
+## Copyright
+
+Sven Uitendaal owns the material in this repository.
+
 
 ## Better Code Hub
 
