@@ -46,3 +46,7 @@ I want to use the audio recorder and I want to save the records.
 
 * Making a loop. Once recorded one round, it has to be played the next time the loop plays.
 * At the end the file has to be saved to a directory in the mobile phone.
+
+## Better Code Hub
+
+[![BCH compliance](https://bettercodehub.com/edge/badge/suitendaal/finalProject?branch=master)](https://bettercodehub.com/)
