@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 /**
+ * Created by Sven Uitendaal.
  * This activity exists to tell the user who created this application and
  * especially how to use this app.
  */

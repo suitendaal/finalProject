@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * Created by Sven Uitendaal.
  * Class to define a single recording sample. A sample has a mediaplayer which can play,
  * pause and stop the sample. It also has a function to delete itself.
  */

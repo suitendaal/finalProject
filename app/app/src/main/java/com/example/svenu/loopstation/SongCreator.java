@@ -6,8 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 /**
+ * Created by Sven Uitendaal.
  * Class which copies all the recorded samples to another directory. It saves the recorded song.
  */
 

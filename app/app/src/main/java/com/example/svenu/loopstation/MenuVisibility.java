@@ -5,9 +5,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.util.ConcurrentModificationException;
-
 /**
+ * Created by Sven Uitendaal.
  * Class to tell the activity if the search-menuoption should be visible.
  */
 

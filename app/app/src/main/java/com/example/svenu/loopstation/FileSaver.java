@@ -3,8 +3,6 @@ package com.example.svenu.loopstation;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -13,6 +11,7 @@ import android.widget.Toast;
 import java.io.File;
 
 /**
+ * Created by Sven Uitendaal.
  * Class which creates a dialogframe to save a file. It also checks if the filename
  * given by the user is available.
  */

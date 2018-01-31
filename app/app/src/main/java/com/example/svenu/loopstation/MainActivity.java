@@ -20,6 +20,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 /**
+ * Created by Sven Uitendaal.
  * Activity where the user can record samples and listen to them. The user can also see lyrics of a
  * song when he searched for it. At the end the user can save the recorded samples.
  */

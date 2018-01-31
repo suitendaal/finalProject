@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 /**
+ * Created by Sven Uitendaal.
  * Class to create an alertdialog with a positive and a negative.
  */
 

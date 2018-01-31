@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
+ * Created by Sven Uitendaal.
  * Class which has a mediarecorder to record samples. When a sample is recorder it is added to
  * the record's collection of samples. It can record and stop recording a sample.
  * The maximum duration time is the time of the first recorded sample.
@@ -33,6 +34,9 @@ public class Record {
     // Bit and samplerate for recording.
     private final int bitRate = 16;
     private final int sampleRate = 44100;
+
+    // Max duration for the first sample.
+    private final int maxDuration = 600000;
 
     public Record(String aPathName, String aFileFormat, ToggleButton aRecordButton, ToggleButton aPlayPauseButton) {
         pathName = aPathName;
@@ -72,7 +76,6 @@ public class Record {
 
     public void close() {
         // Stop playing and stop recording.
-        stop();
         if (isRecording.getValue() != ActionChecker.notDoing) {
             try {
                 stopRecording();
@@ -81,15 +84,21 @@ public class Record {
                 e.printStackTrace();
             }
         }
+        stop();
     }
 
     public void buttonPlayPauseClicked() {
-        // Tell the record to play or pause the samples.
-        if (isPlaying.getValue() == ActionChecker.doing) {
-            pause();
+        // When no samples are recorded, playPauseButton is not available.
+        if (firstRecord) {
+            playPauseButton.setChecked(false);
         }
         else {
-            play();
+            // Tell the record to play or pause the samples.
+            if (isPlaying.getValue() == ActionChecker.doing) {
+                pause();
+            } else {
+                play();
+            }
         }
     }
 
@@ -266,6 +275,9 @@ public class Record {
 
                 // Play the samples.
                 play();
+            }
+            else {
+                recorder.setMaxDuration(maxDuration);
             }
 
             // Initialize the recorder.

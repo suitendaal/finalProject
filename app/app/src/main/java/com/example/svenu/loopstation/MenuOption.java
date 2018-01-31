@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 /**
+ * Created by Sven Uitendaal.
  * Class to tell the app which activity to load when a menuoption is clicked.
  */
 

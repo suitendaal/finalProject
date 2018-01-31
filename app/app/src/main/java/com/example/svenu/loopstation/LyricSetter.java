@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 /**
+ * Created by Sven Uitendaal.
  * Class which parses the html until the lyrics are kept.
  */
 

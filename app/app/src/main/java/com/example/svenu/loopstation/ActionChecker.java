@@ -1,6 +1,7 @@
 package com.example.svenu.loopstation;
 
 /**
+ * Created by Sven Uitendaal.
  * This class is a kind of boolean but with 3 states; doing, going to do and not doing.
  * It also has a listener to check when this state changes.
  */

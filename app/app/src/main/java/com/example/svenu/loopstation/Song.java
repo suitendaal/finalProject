@@ -1,6 +1,7 @@
 package com.example.svenu.loopstation;
 
 /**
+ * Created by Sven Uitendaal.
  * Class which represents a song searched in searchactivity. It has an artist, a title and
  * a genius url.
  */

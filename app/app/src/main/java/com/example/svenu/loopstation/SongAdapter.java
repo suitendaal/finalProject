@@ -1,6 +1,5 @@
 package com.example.svenu.loopstation;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
+ * Created by Sven Uitendaal.
  * Adapter to show searched songs in the searchactivity in a listview.
  */
 

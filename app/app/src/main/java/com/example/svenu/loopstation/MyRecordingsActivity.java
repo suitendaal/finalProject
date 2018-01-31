@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ * Created by Sven Uitendaal.
  * Class in which the user can see his saved recordings and play them. The saved recordings are
  * loaded in a listview and the user can click them to play them or longclick them to delete them.
  * If a record is not available anymore, when the directory of the recording is empty, the user will

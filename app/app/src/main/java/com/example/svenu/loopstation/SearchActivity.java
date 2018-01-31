@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
+ * Created by Sven Uitendaal.
  * Activity where the user can search songs via the genius api. When the user found a song and
  * clicks on it, the mainactivity is loaded with the lyrics of the chosen song.
  */

@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.File;
 
 /**
+ * Created by Sven Uitendaal.
  * Class to create a new directory on the mobile device.
  */
 

@@ -4,24 +4,19 @@ package com.example.svenu.loopstation;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.File;
 import java.util.ArrayList;
 
-
 /**
+ * Created by Sven Uitendaal.
  * Fragment to play and loop a saved recording.
  */
 public class PlayFragment extends DialogFragment {
@@ -51,7 +46,6 @@ public class PlayFragment extends DialogFragment {
 
     private class GoPlayPauseClickListener implements CompoundButton.OnCheckedChangeListener {
         // Tell the samples to play or pause.
-
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean pressed) {
             if (pressed) {
