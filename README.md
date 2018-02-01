@@ -56,8 +56,8 @@ The purpose of this app is to loop recorded audio and make covers this way.
 
 ## Screenshots
 
-<img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58.jpeg" width="30%" height="30%" /><img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(1).jpeg" width="30%" height="30%" /><img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(2).jpeg" width="30%" height="30%" />
-<img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(3).jpeg" width="30%" height="30%" /> <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(4).jpeg" width="30%" height="30%" /><img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(5).jpeg" width="30%" height="30%" />
+<img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58.jpeg" width="30%" height="30%" /> <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(1).jpeg" width="30%" height="30%" /> <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(2).jpeg" width="30%" height="30%" />
+<img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(3).jpeg" width="30%" height="30%" /> <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(4).jpeg" width="30%" height="30%" /> <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(5).jpeg" width="30%" height="30%" />
 
 
 ## Copyright
