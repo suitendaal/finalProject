@@ -118,6 +118,22 @@ The SongCreator is the class which saves the recording. It gets the filepath and
 
 ### Challenges and changes
 
-#### Recording samples
+#### Start recording
 
-When you have recorded the 
+When you have recorded the first sample I wanted to press the record button whenever you liked. I found out it was easier to mix audio when the recordings all started at the same moment. So when you press the record button the application waits with recording until the loop has ended.
+
+#### Record a new sample
+
+When you record a new sample I wanted to overwrite the previous sample with the new mixed sample. I found out it was pretty difficult to mix audio so I decided to record all samples in different files and when you click play all of the samples are played at the same time.
+
+#### Save a file
+
+When the user presses the save button I wanted to collect all the samples and merge them to one audio file. I found out it was difficult and beyond my knowledge and the timespan of this project to find out how to merge audio files. I decided when the user picks a name a directory is created with this name and all of the samples are put into this directory. When the user plays a recording all of the samples are played at the same time.
+
+#### Fragments or activities
+
+I wanted to make every app page a fragment for the smoothness of the application. But working with fragments is a little bit different than with activities. When I started programming I thougth let's not make it too difficult with bugs and errors caused by the fragment so I decided to use activities, which are easier to programm.
+
+#### More time
+
+If I had more time for this project I would find out how to merge recorded audio files so a recording can be shared as audio file. There is also a short delay on the recording, which is quite frustrating when you want to record. Maybe I would build in a delay in playing or recording to prevent this delay.
