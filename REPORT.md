@@ -7,7 +7,8 @@ When a song is finished you can save your samples.
 
 ### Screenshot
 
-![](https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(5).jpeg)
+
+<img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(5).jpeg" width="30%" height="30%" />
 
 ## Technical design
 
