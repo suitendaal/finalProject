@@ -60,6 +60,19 @@ The purpose of this app is to loop recorded audio and make covers this way.
 <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(3).jpeg" width="30%" height="30%" /> <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(4).jpeg" width="30%" height="30%" /> <img src="https://github.com/suitendaal/finalProject/blob/master/doc/screenshots/WhatsApp%20Image%202018-01-30%20at%2013.44.58%20(5).jpeg" width="30%" height="30%" />
 
 
+## Video
+
+My editing program stopped working so last minute I decided to upload 4 videos to youtube.
+
+https://youtu.be/KZ--H0-aZjk
+
+https://youtu.be/g-1yMisXhf8
+
+https://youtu.be/slohcZKnAfQ
+
+https://youtu.be/1ox4XAWNfCU
+
+
 ## Copyright
 
 Sven Uitendaal owns the material in this repository.
